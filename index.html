@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1280">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Maya Greenberg | Portfolio</title>
 <link rel="icon" type="image/png" href="site-design/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,9 +36,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 60px 5px;
+    padding: 18px 60px 14px;
     font-size: 15px;
     background: #ffffff;
+  }
+  .nav-left { align-items: center; }
+  /* The hand-cut "m" from the site, as a small mark at the start of the header */
+  .nav-logo { display: inline-flex; margin-right: 4px; }
+  .nav-logo img { height: 26px; width: auto; display: block; mix-blend-mode: multiply; transition: transform 0.25s ease; }
+  .nav-logo:hover img { transform: rotate(-8deg); }
+  .nav-logo.wiggle img { animation: logo-wiggle 0.6s ease; }
+  @keyframes logo-wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-14deg); }
+    50% { transform: rotate(10deg); }
+    75% { transform: rotate(-5deg); }
   }
   .nav-left { display: flex; gap: 32px; font-family: 'Inter', sans-serif; }
   .nav-right { display: flex; gap: 24px; font-size: 14px; font-family: 'Inter', sans-serif; transition: opacity 0.3s ease; }
@@ -105,7 +117,7 @@
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    transition: opacity 0.3s ease, transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, top 0.25s ease;
+    transition: opacity 0.3s ease, transform 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     z-index: 998;
     display: flex;
     align-items: center;
@@ -162,7 +174,23 @@
     font-weight: 600; font-size: 21px; color: #3b6d11;
     margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .hero .tagline .sparkle-icon { transition: transform 0.45s ease; transform-origin: center; }
+  .hero .tagline .sparkle-icon { transition: transform 0.45s ease; transform-origin: center; position: relative; display: inline-block; width: 17px; height: 22px; }
+  /* The two sparkles are cut from the same image and pop in one after the other */
+  .sparkle-part { position: absolute; inset: 0; width: 100%; height: 100%; animation: sparkle-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; }
+  /* The image holds two sparkles side by side: left one up top, right one lower down */
+  .sparkle-big { clip-path: inset(0 50% 0 0); transform-origin: 21% 35%; animation-delay: 1.1s; }
+  .sparkle-small { clip-path: inset(0 0 0 50%); transform-origin: 76% 67%; animation-delay: 1.35s; }
+  @keyframes sparkle-pop { from { transform: scale(0); } to { transform: scale(1); } }
+  /* Home first load: the name, then the line, then everything else */
+  .intro .hero .tagline { animation: intro-fade 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.75s backwards; }
+  .intro #home .project-row.reveal { transition-delay: 0.9s; }
+  @keyframes intro-fade {
+    from { opacity: 0; filter: blur(8px); letter-spacing: 0.04em; }
+    to { opacity: 1; filter: blur(0); letter-spacing: normal; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sparkle-part, .intro .hero .tagline { animation: none; }
+  }
   .hero .tagline .sparkle-icon.pulse { transform: scale(1.08); }
 
   /* PROJECT LIST */
@@ -207,7 +235,13 @@
   /* --- BONUS PROJECTS --- */
   .bonus-frame { border: 1px solid #e2e2e2; border-radius: 20px; padding: 45px 50px; margin-bottom: 50px; }
   .bonus-frame h3 { text-align: left; margin-bottom: 4px; }
-  .bonus-frame .bonus-subtitle { text-align: left; font-size: 14px; font-style: normal; color: #888; margin: 0 0 28px; }
+  .bonus-frame .bonus-subtitle { text-align: left; font-size: 16px; font-style: normal; color: #555; margin: 6px 0 28px; }
+  /* Small label above each title naming the medium, like the labels on the home page cards */
+  .bonus-frame .bonus-kind {
+    font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: #c2409a; margin: 0 0 8px; max-width: none;
+  }
+  .page.aligned .bonus-frame h3 { margin-top: 0; margin-bottom: 0 !important; }
   .bonus-illustration-row { display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
   .bonus-illustration-row .screen-img-wrap { flex: 1; min-width: 140px; max-width: 200px; }
   .bonus-video-row { display: flex; gap: 20px; align-items: flex-start; justify-content: flex-start; flex-wrap: wrap; }
@@ -298,7 +332,7 @@
 
   /* Screens List */
   .screen-item { text-align:center; flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; }
-  .screen-item .screen-title { font-family:'Inter', sans-serif; font-size:14px; font-weight:600; color:#1a1a1a; margin:0 0 12px; white-space:nowrap; text-align: center; }
+  .screen-item .screen-title { font-family:'Inter', sans-serif; font-size:16px; font-weight:600; color:#1a1a1a; margin:0 0 12px; white-space:nowrap; text-align: center; }
   .screen-img-wrap { position:relative; cursor:pointer; width:100%; text-align: center; }
   .screen-item .comparison-slider { width:100%; }
   .screen-img-wrap img.screen-img { width:100%; height:auto; display:block; border-radius:4px; }
@@ -416,7 +450,7 @@
      and right edges. Long paragraphs start on the same left edge but stop
      at a comfortable reading width. The side gutters always leave room for
      the floating Back / Next buttons. */
-  .page.aligned { --content-w: min(1100px, calc(100vw - 420px)); }
+  .page.aligned { --content-w: min(1100px, calc(100vw - 440px)); }
   .page.aligned > .detail-hero.framed,
   .page.aligned > .detail-section,
   .page.aligned > .detail-media {
@@ -428,11 +462,19 @@
   .page.aligned .detail-section p { max-width: 720px; }
   .page.aligned .detail-section p.carousel-counter { max-width: none; text-align: center; }
   .page.aligned h3 { text-align: left !important; }
+  /* One type scale for project pages: section title 28, caption 16, notes 14 */
+  .page.aligned .detail-section > h3, .page.aligned .bonus-frame h3 { font-size: 28px; letter-spacing: -0.3px; margin-bottom: 20px; }
+  .page.aligned .hover-hint, .page.aligned .timeline-hint { font-size: 14px !important; color: #888; }
   .page.aligned .spicehaus-video-row { width: 100%; left: 0; transform: none; }
   .page.aligned .mood-carousel { max-width: none; gap: 24px; }
   .page.aligned .mood-carousel img { flex: 1; min-width: 0; max-width: none; }
   /* Fig-Monkey lives inside one big frame: its text column fills the frame
      next to the corner video instead of stopping at 650px. */
+  /* Fig-Monkey sits in one big frame next to a corner video, so its frame
+     reaches a little wider than the other pages when the screen allows. */
+  .page.aligned > #figMonkeyMegaFrame { width: min(1300px, calc(100vw - 440px)) !important; }
+  /* Its corner video sticks just below the sticky header, not behind it */
+  #figMonkeyVideoWrap { top: 0 !important; }
   .page.aligned #figMonkeyMegaFrame .fm-content-col { flex: 1 1 auto !important; max-width: none !important; margin-right: 48px; }
 
   /* Captions: always above the image, so you know what you're looking at
@@ -442,19 +484,19 @@
   .page.aligned div:has(> video) > .video-caption { order: -1; }
   .page.aligned .spicehaus-screen-title,
   .page.aligned .video-caption {
-    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #1a1a1a;
+    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: #1a1a1a;
     margin: 0 0 12px !important; text-align: center !important; max-width: none !important; white-space: normal;
   }
   .page.aligned .video-caption.video-sub,
   .page.aligned .spicehaus-screen-title + .video-sub {
-    font-size: 13px; font-weight: 400; color: #888; margin: -8px 0 12px !important;
+    font-size: 14px; font-weight: 400; color: #888; margin: -8px 0 12px !important;
   }
   .page.aligned .monkey-video-card h4 {
-    min-height: 36px; margin: 0 0 10px; display: flex; align-items: flex-start; justify-content: center;
-    font-size: 14px; font-weight: 600; color: #1a1a1a;
+    min-height: 40px; margin: 0 0 10px; display: flex; align-items: flex-start; justify-content: center;
+    font-size: 16px; font-weight: 600; color: #1a1a1a;
   }
   .page.aligned .detail-media div:has(> h4 + img) > h4 {
-    margin: 0 0 12px !important; font-size: 14px !important; font-weight: 600 !important;
+    margin: 0 0 12px !important; font-size: 16px !important; font-weight: 600 !important;
   }
 
   /* Tall landing-page wireframe: shown in a window that matches the height
@@ -468,6 +510,17 @@
     border: 1px solid #ddd; border-radius: 6px;
   }
   .wf-scroll img { display: block; width: 100%; }
+  @media (max-width: 1100px) {
+    .page.aligned { --content-w: calc(100vw - 80px); }
+    .bonus-video-row { flex-wrap: wrap !important; }
+    .bonus-video-row video { flex: 1 1 200px; min-width: 0; }
+    .payments-stack-row .screen-img-wrap { width: 27% !important; }
+    .fui-card, .fui-gear { scale: 0.75; }
+    .page.aligned > #figMonkeyMegaFrame { width: var(--content-w) !important; }
+    /* Next keeps the reading direction on the right; Top moves to the left */
+    .floating-next-project { top: auto !important; bottom: 30px; }
+    .floating-scrollTop { right: auto; left: 30px; }
+  }
   @media (max-width: 700px) {
     .page.aligned { --content-w: calc(100vw - 40px); }
     .wf-row { flex-direction: column; }
@@ -496,9 +549,6 @@
     .video-expand-btn { display: none; }
   }
 
-  /* Next-project button: drops the project name only when the full label
-     would not fit in the side margin next to the content (set in JS). */
-  .floating-next-project.compact .next-name { display: none; }
 
   /* Each project page takes small accents from its tile color on the home
      page; the site's own green stays for nav, footer and buttons. */
@@ -533,6 +583,26 @@
     #project-spicehaus .mobile-flow-row .screen-arrow { width: 16px; margin-top: 10px; }
   }
 
+
+  /* Soft entrance: blocks fade up out of a light blur the first time they
+     scroll into view (added in JS, so nothing hides if the script fails). */
+  .reveal {
+    opacity: 0; transform: translateY(12px); filter: blur(2px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.6s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; filter: none; }
+
+  /* Home: the green line under the name draws itself from left to right.
+     A white strip covers the line in the image and slides away. */
+  .hero-name { position: relative; max-width: 720px; margin: 0 auto; }
+  .hero-line-cover {
+    position: absolute; left: 8.6%; width: 45%; top: 90.3%; height: 6.5%;
+    background: #ffffff; transform-origin: right center; transform: scaleX(0);
+    animation: hero-line-draw 0.6s cubic-bezier(0.6, 0, 0.3, 1) 0.35s backwards;
+  }
+  @keyframes hero-line-draw { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+  @media (prefers-reduced-motion: reduce) { .hero-line-cover { display: none; } }
+
   /* Zoomed lightbox images are moved by dragging */
   #lightbox-img-scroll[style*="overflow: auto"] img { cursor: grab !important; -webkit-user-drag: none; user-select: none; }
   #lightbox-img-scroll.dragging img { cursor: grabbing !important; }
@@ -553,10 +623,10 @@
     border-radius: 16px; box-shadow: 0 18px 40px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.06);
     animation: fui-float 6s ease-in-out infinite;
   }
-  .fui-card-pay { left: 7%; top: 9%; animation-delay: -1s; }
+  .fui-card-pay { left: 3%; top: 9%; scale: 0.88; animation-delay: -1s; }
   .fui-card-look { right: 9%; top: 7%; animation-delay: -3s; }
   .fui-card-place { left: 15%; top: 52%; animation-delay: -2s; }
-  .fui-card-inspo { left: 3%; bottom: 6%; animation-delay: -4s; }
+  .fui-card-inspo { left: 13.5%; bottom: 8%; scale: 1.2; animation-delay: -4s; }
   .fui-gear { position: absolute; right: 6%; bottom: 7%; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .fui-gear-row { display: flex; gap: 12px; }
   .fui-gear-row .fui-tile { position: relative; border-radius: 14px; }
@@ -574,6 +644,19 @@
   .fui-check path {
     fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
     stroke-dasharray: 16; stroke-dashoffset: 16; animation: fui-check-draw 4s ease-in-out infinite;
+  }
+  /* The battery's label flips to Charged just after the camera gets its check */
+  .fui-charge {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 17px; overflow: hidden;
+    border-radius: 0 0 14px 14px; font-size: 10px; font-weight: 600; text-align: center;
+  }
+  .fui-charge span { position: absolute; inset: 0; line-height: 17px; }
+  .fui-charge span:first-child { background: #fff; color: #aaa; }
+  .fui-charge span:last-child { background: var(--accent, #49724F); color: #fff; animation: fui-charged 4s ease-in-out infinite; }
+  @keyframes fui-charged {
+    0%, 40% { opacity: 0; }
+    48%, 82% { opacity: 1; }
+    90%, 100% { opacity: 0; }
   }
   @keyframes fui-check-pop {
     0%, 10% { transform: scale(0); }
@@ -593,6 +676,7 @@
     .fui-card, .fui-chip { animation: none; }
     .fui-check circle { animation: none; transform: scale(1); }
     .fui-check path { animation: none; stroke-dashoffset: 0; }
+    .fui-charge span:last-child { animation: none; opacity: 1; }
   }
 
   /* OH SHOOT: what makes it different */
@@ -1013,11 +1097,17 @@
 <!-- HOME PAGE -->
 <section class="page active" id="home">
   <div class="hero">
-    <img src="site-design/hi-im-maya.png" alt="Hi! I'm Maya Greenberg" style="max-width: 720px; width: 100%; height: auto; display: block; margin: 0 auto;">
+    <div class="hero-name">
+      <img src="site-design/hi-im-maya.png" alt="Hi! I'm Maya Greenberg" style="width: 100%; height: auto; display: block;">
+      <span class="hero-line-cover" aria-hidden="true"></span>
+    </div>
     <div class="tagline">
       Feel free to take your shoes off and look around!
       <span class="sparkle-hover-zone" style="display:inline-flex; padding:5px;">
-        <img src="site-design/sparkle.png" alt="" class="sparkle-icon" style="height:22px;">
+        <span class="sparkle-icon" aria-hidden="true">
+          <img src="site-design/sparkle.png" alt="" class="sparkle-part sparkle-big">
+          <img src="site-design/sparkle.png" alt="" class="sparkle-part sparkle-small">
+        </span>
       </span>
     </div>
   </div>
@@ -1068,12 +1158,12 @@
       <div class="project-info">
         <div class="label">Extra work</div>
         <h2>Bonus Projects</h2>
-        <p>A small collection of illustration, motion, and stop motion, made just because I enjoy it.</p>
+        <p>Illustration, motion and stop motion pieces from my studies.</p>
       </div>
     </div>
   </div>
   
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1096,14 +1186,12 @@
       <img class="fui-phone" src="oh-shoot/dynamic/live-events.png" alt="Oh Shoot home screen on the day of a shoot">
       <div class="fui-card fui-card-pay" style="width:324px; height:173px; background-image:url('oh-shoot/project-payments/payment.png'); background-size:399px auto; background-position:-37px -183px;"></div>
       <div class="fui-card fui-card-look" style="width:224px; height:288px; background-image:url('oh-shoot/six-screens/plan-screen.png'); background-size:258px auto; background-position:-16px -125px;"></div>
-<div class="fui-card fui-card-place" style="width:235px; height:115px; background-image:url('oh-shoot/six-screens/schedule-screen.png'); background-size:281px auto; background-position:-28px -101px;"></div>
-      <div class="fui-card fui-card-inspo" style="width:94px; height:186px; background-image:url('oh-shoot/six-screens/inspired-screen.png'); background-size:338px auto; background-position:-21px -291px;"></div>
+      <div class="fui-card fui-card-inspo" style="width:126px; height:208px; background-image:url('oh-shoot/project-payments/client-cards.png'); background-size:375px auto; background-position:-20px -492px;"></div>
       <div class="fui-gear">
         <span class="fui-chip">Camera &amp; Essentials</span>
         <div class="fui-gear-row">
           <div class="fui-card fui-tile" style="width:101px; height:102px; background-image:url('oh-shoot/six-screens/pack-screen.png'); background-size:366px auto; background-position:-25px -134px;"><svg class="fui-check" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="M7 12.5l3.2 3.2L17 9"/></svg></div>
-          <div class="fui-card fui-tile" style="width:101px; height:102px; background-image:url('oh-shoot/six-screens/pack-screen.png'); background-size:366px auto; background-position:-133px -134px;"></div>
-          <div class="fui-card fui-tile" style="width:101px; height:102px; background-image:url('oh-shoot/six-screens/pack-screen.png'); background-size:366px auto; background-position:-240px -134px;"></div>
+          <div class="fui-card fui-tile" style="width:101px; height:102px; background-image:url('oh-shoot/six-screens/pack-screen.png'); background-size:366px auto; background-position:-133px -134px;"><span class="fui-charge" aria-hidden="true"><span>Not charged</span><span>Charged</span></span></div>
         </div>
       </div>
     </div>
@@ -1311,7 +1399,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1537,7 +1625,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1669,7 +1757,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1817,7 +1905,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1894,7 +1982,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -1914,8 +2002,9 @@
 
   <div class="detail-section" style="margin-top: 30px;">
     <div class="bonus-frame">
+      <p class="bonus-kind">Illustration</p>
       <h3>The Caterpillar and the Giraffe</h3>
-      <p class="bonus-subtitle">Illustrations inspired by Kitty Crowther</p>
+      <p class="bonus-subtitle">Inspired by Kitty Crowther</p>
       <div class="bonus-illustration-row">
         <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-1.png', bonusGallery, 0, 'The Caterpillar and the Giraffe')">
           <img class="screen-img" src="bonus/snail-1.png" alt="Illustration 1">
@@ -1941,8 +2030,9 @@
     </div>
 
     <div class="bonus-frame">
-      <h3 style="margin-bottom:4px; text-align:left !important;">Foreign Substance</h3>
-      <p class="bonus-subtitle" style="text-align:left !important; margin-left:0;">Mock opening titles for a fictional series.<br>Exploring the use of plastic bags and practical effects</p>
+      <p class="bonus-kind">Motion</p>
+      <h3>Foreign Substance</h3>
+      <p class="bonus-subtitle">Mock opening titles for a fictional series, made with plastic bags and practical effects</p>
       <div class="bonus-video-row">
         <video controls playsinline preload="auto" poster="bonus/episode-1.png">
           <source src="bonus/episode-1.mp4" type="video/mp4">
@@ -1957,8 +2047,9 @@
     </div>
 
     <div class="bonus-frame" style="margin-bottom:0;">
-      <h3 style="margin-bottom:4px;">Loves me, loves me not</h3>
-      <p class="bonus-subtitle">Stop motion animation with felt</p>
+      <p class="bonus-kind">Stop motion</p>
+      <h3>Loves me, loves me not</h3>
+      <p class="bonus-subtitle">Made with felt</p>
       <div class="bonus-video-row single">
         <video controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();">
           <source src="bonus/loves-me.mp4" type="video/mp4">
@@ -1967,7 +2058,7 @@
     </div>
   </div>
 
-  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:40px max(60px, calc((100% - var(--content-w, 1100px)) / 2)); border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+  <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
     <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
@@ -2270,6 +2361,33 @@
     scroll.addEventListener('click', (e) => {
       if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
     }, true);
+  })();
+
+  // Soft entrance for each block as it first scrolls into view.
+  (function setUpReveal() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const targets = document.querySelectorAll('.hero, .project-row, .page > .detail-hero, .page > .detail-section, .page > .detail-media');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          // A moment later, so blocks already on screen at load still animate in
+          setTimeout(() => e.target.classList.add('in'), 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.body.classList.add('intro');
+    setTimeout(() => document.body.classList.remove('intro'), 2500);
+    targets.forEach((t) => { t.classList.add('reveal'); io.observe(t); });
+    // Safety net: whatever is already on screen shortly after load is shown,
+    // even if the observer is slow to report it.
+    setTimeout(() => {
+      targets.forEach((t) => {
+        const r = t.getBoundingClientRect();
+        if (r.height > 0 && r.top < window.innerHeight && r.bottom > 0) t.classList.add('in');
+      });
+    }, 300);
   })();
 
   function openVideoLightbox(src, title) {
@@ -2661,7 +2779,7 @@
     if (navMatch) navMatch.classList.add('active');
 
     const navWorkLink = document.getElementById('navWorkLink');
-    navWorkLink.innerHTML = id.startsWith('project-') ? '<span class="back-arrow">&larr;</span><span>Work</span>' : 'Work';
+    navWorkLink.innerHTML = 'Work';
 
     document.getElementById('floatBackWork').classList.remove('visible');
     document.getElementById('floatScrollTop').classList.remove('visible');
@@ -2775,6 +2893,17 @@
     if (idx === -1 || idx === projectOrder.length - 1) return null;
     return projectOrder[idx + 1];
   }
+  function getPrevProjectId(currentId) {
+    const idx = projectOrder.indexOf(currentId);
+    if (idx <= 0) return null;
+    return projectOrder[idx - 1];
+  }
+  function goToPrevProject() {
+    const activePage = document.querySelector('.page.active');
+    if (!activePage) return;
+    const prevId = getPrevProjectId(activePage.id.replace('project-', ''));
+    if (prevId) showPage('project-' + prevId);
+  }
   function goToNextProject() {
     const activePage = document.querySelector('.page.active');
     if (!activePage) return;
@@ -2782,20 +2911,6 @@
     const nextId = getNextProjectId(currentId);
     if (nextId) showPage('project-' + nextId);
   }
-
-  // Shows "Next: Project name" when it fits beside the content, and just
-  // "Next" when the side margin is too narrow for the full label.
-  function fitNextProjectLabel() {
-    const btn = document.getElementById('floatNextProject');
-    const activePage = document.querySelector('.page.active');
-    const content = activePage ? activePage.querySelector(':scope > .detail-hero') : null;
-    if (!content) return;
-    btn.classList.remove('compact');
-    const free = window.innerWidth - content.getBoundingClientRect().right;
-    const needed = btn.getBoundingClientRect().width + 30 + 48;
-    btn.classList.toggle('compact', needed > free);
-  }
-  window.addEventListener('resize', fitNextProjectLabel);
 
   function positionNextProjectButton() {
     const floatNextProject = document.getElementById('floatNextProject');
@@ -2811,8 +2926,6 @@
   }
 
   window.addEventListener('scroll', () => {
-    const activePage = document.querySelector('.page.active');
-    const floatBackWork = document.getElementById('floatBackWork');
     const floatScrollTop = document.getElementById('floatScrollTop');
     const navEl = document.querySelector('nav');
     const navH = navEl ? navEl.offsetHeight : 0;
@@ -2822,13 +2935,19 @@
     } else {
       floatScrollTop.classList.remove('visible');
     }
+    // Once the footer scrolls into view, the Top button rides just above it
+    const activeFooter = document.querySelector('.page.active .site-footer');
+    const footerTop = activeFooter ? activeFooter.getBoundingClientRect().top : Infinity;
+    const zoom = parseFloat(getComputedStyle(floatScrollTop).zoom) || 1;
+    const lift = Math.max(30, (window.innerHeight - footerTop) / zoom + 16);
+    floatScrollTop.style.bottom = lift + 'px';
+    // On narrow screens Next sits in the bottom corner too, so it rides above the footer as well
+    document.getElementById('floatNextProject').style.bottom = window.innerWidth <= 1100 ? lift + 'px' : '';
 
-    if (activePage && activePage.id.startsWith('project-')) {
-      if (window.scrollY > navH) {
-        floatBackWork.classList.add('visible');
-      } else {
-        floatBackWork.classList.remove('visible');
-      }
+    const activePage = document.querySelector('.page.active');
+    const floatBackWork = document.getElementById('floatBackWork');
+    if (activePage && activePage.id.startsWith('project-') && window.scrollY > navH) {
+      floatBackWork.classList.add('visible');
     } else {
       floatBackWork.classList.remove('visible');
     }
@@ -2852,14 +2971,12 @@
     const staleInlineLink = footer ? footer.querySelector('.inline-next-project') : null;
     if (staleInlineLink) staleInlineLink.remove();
 
+    // Both buttons stay visible the whole time on a project page, with the
+    // project name always shown under a small direction label.
     if (nextId) {
-      floatNextProject.innerHTML = 'Next<span class="next-name">: ' + projectNames[nextId] + '</span> →';
-      // Unlike the other floating buttons, this one stays visible the whole
-      // time on a project page - not just after scrolling - so it's always
-      // reachable, not something you have to scroll to discover.
+      const shortNames = { 'final-dinner': 'Final Dinner', 'bonus': 'Bonus' };
+      floatNextProject.textContent = 'Next: ' + (shortNames[nextId] || projectNames[nextId]) + ' →';
       floatNextProject.classList.add('visible');
-      fitNextProjectLabel();
-      requestAnimationFrame(fitNextProjectLabel);
     } else {
       floatNextProject.classList.remove('visible');
     }
