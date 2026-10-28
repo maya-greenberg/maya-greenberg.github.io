@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 880" width="1160" height="880" font-family="Inter, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b5b5b"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf8f4; }
+      .line { fill: none; stroke: #6b5b5b; stroke-width: 1.5; }
+      .screen { fill: #ffffff; stroke: #3a2a2a; stroke-width: 1.4; }
+      .decision { fill: #8f1d1d; }
+      .io { fill: #f4e4e1; stroke: #c98a84; stroke-width: 1.2; }
+      .terminal { fill: #2b1a1a; }
+      .return { fill: #ffffff; stroke: #9a8f8f; stroke-width: 1.2; stroke-dasharray: 4 3; }
+      .t { font-size: 13px; fill: #1f1a1a; text-anchor: middle; dominant-baseline: middle; }
+      .t-light { font-size: 13px; fill: #ffffff; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+      .t-io { font-size: 12.5px; fill: #4a1d1d; text-anchor: middle; dominant-baseline: middle; }
+      .t-return { font-size: 12px; fill: #6b5b5b; text-anchor: middle; dominant-baseline: middle; }
+      .label { font-size: 12px; fill: #8f1d1d; font-weight: 600; }
+      .note { font-size: 11px; fill: #8a7f7f; font-style: italic; }
+      .legend { font-size: 12px; fill: #555; dominant-baseline: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1160" height="880" rx="16"/>
+
+  <!-- Connectors: map, guests, personal area -->
+  <path class="line" d="M88,120 H130" marker-end="url(#arrow)"/>
+  <path class="line" d="M200,143 V230" marker-end="url(#arrow)"/>
+  <path class="line" d="M200,276 V330" marker-end="url(#arrow)"/>
+  <path class="line" d="M270,253 H320" marker-end="url(#arrow)"/>
+  <path class="line" d="M350,276 V306" marker-end="url(#arrow)"/>
+  <path class="line" d="M430,276 V291 H460 V306" marker-end="url(#arrow)"/>
+  <path class="line" d="M270,120 H318" marker-end="url(#arrow)"/>
+
+  <!-- Connectors: summon branch -->
+  <path class="line" d="M462,120 H530" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,143 V173" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,219 V249" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,295 V325" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,371 V386" marker-end="url(#arrow)"/>
+  <path class="line" d="M538,430 H480" marker-end="url(#arrow)"/>
+  <path class="line" d="M420,452 V482" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,474 V504" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,550 V580" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,626 V656" marker-end="url(#arrow)"/>
+  <path class="line" d="M600,702 V732" marker-end="url(#arrow)"/>
+
+  <!-- Connectors: accusation branch -->
+  <path class="line" d="M390,72 V40 H900 V97" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,143 V173" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,219 V249" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,295 V325" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,371 V386" marker-end="url(#arrow)"/>
+  <path class="line" d="M962,430 H1000" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,474 V504" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,550 V580" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,626 V656" marker-end="url(#arrow)"/>
+  <path class="line" d="M900,702 V732" marker-end="url(#arrow)"/>
+
+  <!-- Branch labels -->
+  <text class="label" x="474" y="110">No</text>
+  <text class="label" x="400" y="56">Yes</text>
+  <text class="label" x="509" y="420" text-anchor="middle">Reject</text>
+  <text class="label" x="610" y="491">Accept</text>
+  <text class="label" x="970" y="420">No</text>
+  <text class="label" x="910" y="491">Yes</text>
+
+  <!-- Start + home screen -->
+  <circle class="terminal" cx="60" cy="120" r="28"/>
+  <text class="t-light" x="60" y="120">Start</text>
+
+  <text class="note" x="130" y="82">Toggle guest locations on / off</text>
+  <rect class="screen" x="130" y="97" width="140" height="46" rx="8"/>
+  <text class="t" x="200" y="120">Mansion map</text>
+
+  <polygon class="decision" points="390,72 462,120 390,168 318,120"/>
+  <text class="t-light" x="390" y="112">All guests</text>
+  <text class="t-light" x="390" y="128">investigated?</text>
+
+  <!-- Guests + personal area -->
+  <rect class="screen" x="130" y="230" width="140" height="46" rx="8"/>
+  <text class="t" x="200" y="253">Guests</text>
+
+  <rect class="screen" x="130" y="330" width="140" height="46" rx="8"/>
+  <text class="t" x="200" y="353">Guest profile</text>
+  <text class="note" x="130" y="398">Toggle: investigated / not</text>
+
+  <rect class="screen" x="320" y="230" width="140" height="46" rx="8"/>
+  <text class="t" x="390" y="253">Personal area</text>
+
+  <rect class="return" x="300" y="306" width="100" height="30" rx="15"/>
+  <text class="t-return" x="350" y="321">Back to map</text>
+  <rect class="return" x="410" y="306" width="100" height="30" rx="15"/>
+  <text class="t-return" x="460" y="321">Back to guests</text>
+
+  <!-- Summon branch -->
+  <rect class="screen" x="530" y="97" width="140" height="46" rx="8"/>
+  <text class="t" x="600" y="112">Summon to</text>
+  <text class="t" x="600" y="128">investigation</text>
+
+  <rect class="screen" x="530" y="173" width="140" height="46" rx="8"/>
+  <text class="t" x="600" y="188">Select character</text>
+  <text class="t" x="600" y="204">to summon</text>
+
+  <rect class="screen" x="530" y="249" width="140" height="46" rx="8"/>
+  <text class="t" x="600" y="264">Select room</text>
+  <text class="t" x="600" y="280">for meeting</text>
+
+  <polygon class="io" points="537,325 675,325 663,371 525,371"/>
+  <text class="t-io" x="600" y="340">Invitation sent</text>
+  <text class="t-io" x="600" y="356">to guest</text>
+
+  <polygon class="decision" points="600,386 662,430 600,474 538,430"/>
+  <text class="t-light" x="600" y="430">Accepted?</text>
+
+  <polygon class="io" points="372,408 480,408 468,452 360,452"/>
+  <text class="t-io" x="420" y="422">Notification:</text>
+  <text class="t-io" x="420" y="438">rejected</text>
+
+  <rect class="return" x="370" y="482" width="100" height="30" rx="15"/>
+  <text class="t-return" x="420" y="497">Back to map</text>
+
+  <polygon class="io" points="537,504 675,504 663,550 525,550"/>
+  <text class="t-io" x="600" y="519">Notification:</text>
+  <text class="t-io" x="600" y="535">accepted</text>
+
+  <rect class="screen" x="530" y="580" width="140" height="46" rx="8"/>
+  <text class="t" x="600" y="595">Investigation</text>
+  <text class="t" x="600" y="611">timer</text>
+
+  <rect class="screen" x="530" y="656" width="140" height="46" rx="8"/>
+  <text class="t" x="600" y="671">Mark investigation</text>
+  <text class="t" x="600" y="687">as done</text>
+
+  <rect class="return" x="550" y="732" width="100" height="30" rx="15"/>
+  <text class="t-return" x="600" y="747">Back to map</text>
+
+  <!-- Accusation branch -->
+  <rect class="screen" x="830" y="97" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="120">File accusation</text>
+
+  <rect class="screen" x="830" y="173" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="188">Select accused</text>
+  <text class="t" x="900" y="204">character</text>
+
+  <rect class="screen" x="830" y="249" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="264">Select murder</text>
+  <text class="t" x="900" y="280">room</text>
+
+  <rect class="screen" x="830" y="325" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="340">Select weapon</text>
+  <text class="t" x="900" y="356">used</text>
+
+  <polygon class="decision" points="900,386 962,430 900,474 838,430"/>
+  <text class="t-light" x="900" y="422">Final</text>
+  <text class="t-light" x="900" y="438">choice?</text>
+
+  <rect class="return" x="1000" y="415" width="110" height="30" rx="15"/>
+  <text class="t-return" x="1055" y="430">Back one step</text>
+
+  <rect class="screen" x="830" y="504" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="519">Gather in the</text>
+  <text class="t" x="900" y="535">dining hall (map)</text>
+
+  <rect class="screen" x="830" y="580" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="595">Tap to reveal</text>
+  <text class="t" x="900" y="611">the murderer</text>
+
+  <rect class="screen" x="830" y="656" width="140" height="46" rx="8"/>
+  <text class="t" x="900" y="671">Thank you for</text>
+  <text class="t" x="900" y="687">playing</text>
+
+  <circle class="terminal" cx="900" cy="760" r="28"/>
+  <text class="t-light" x="900" y="760">End</text>
+
+  <!-- Legend -->
+  <rect class="screen" x="40" y="832" width="28" height="18" rx="4"/>
+  <text class="legend" x="76" y="841">Screen</text>
+  <polygon class="decision" points="150,830 164,841 150,852 136,841"/>
+  <text class="legend" x="172" y="841">Decision</text>
+  <polygon class="io" points="252,832 278,832 274,850 248,850"/>
+  <text class="legend" x="286" y="841">System message</text>
+  <circle class="terminal" cx="412" cy="841" r="10"/>
+  <text class="legend" x="428" y="841">Start / End</text>
+  <rect class="return" x="520" y="832" width="34" height="18" rx="9"/>
+  <text class="legend" x="562" y="841">Return to a screen</text>
+</svg>
