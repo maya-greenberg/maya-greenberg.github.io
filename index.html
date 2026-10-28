@@ -603,6 +603,19 @@
   @keyframes hero-line-draw { from { transform: scaleX(1); } to { transform: scaleX(0); } }
   @media (prefers-reduced-motion: reduce) { .hero-line-cover { display: none; } }
 
+  /* "Copied!" bubble above the email link */
+  .copied-pop {
+    position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translate(-50%, 4px);
+    font-size: 12px; font-weight: 600; color: #fff; background: #1a1a1a; white-space: nowrap;
+    padding: 4px 10px; border-radius: 50px; opacity: 0; pointer-events: none;
+  }
+  .copied-pop.show { animation: copied-pop 1.8s ease forwards; }
+  @keyframes copied-pop {
+    0% { opacity: 0; transform: translate(-50%, 4px); }
+    15%, 75% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -2px); }
+  }
+
   /* Zoomed lightbox images are moved by dragging */
   #lightbox-img-scroll[style*="overflow: auto"] img { cursor: grab !important; -webkit-user-drag: none; user-select: none; }
   #lightbox-img-scroll.dragging img { cursor: grabbing !important; }
@@ -2595,29 +2608,34 @@
     const flashColor = el.closest('#about-footer') ? '#ffffff' : '#3b6d11';
     clearTimeout(el._resetTimer);
 
-    const reset = () => {
+    // One click does everything: shows the address, copies it (with a small
+    // "Copied!" bubble), then opens the visitor's mail app. Where no mail app
+    // is set up, the address is still on screen and already copied.
+    el.textContent = address;
+    el.style.color = flashColor;
+    el.style.fontWeight = '600';
+    el.style.position = 'relative';
+
+    let pop = el.querySelector('.copied-pop');
+    if (!pop) {
+      pop = document.createElement('span');
+      pop.className = 'copied-pop';
+      pop.textContent = 'Copied!';
+    }
+    el.appendChild(pop);
+    pop.classList.remove('show');
+    void pop.offsetWidth;
+    pop.classList.add('show');
+
+    // Copy first, then open the mail app, so opening it can't cut the copy short
+    const copied = navigator.clipboard ? navigator.clipboard.writeText(address).catch(() => {}) : Promise.resolve();
+    copied.then(() => setTimeout(() => { window.location.href = 'mailto:' + address; }, 150));
+
+    el._resetTimer = setTimeout(() => {
       el.textContent = 'Email';
       el.style.color = '';
       el.style.fontWeight = '';
-      el.dataset.state = '';
-    };
-
-    if (el.dataset.state === 'revealed') {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(address).catch(() => {});
-      }
-      el.textContent = 'Copied!';
-      el.style.color = flashColor;
-      el.style.fontWeight = '600';
-      el.dataset.state = 'copied';
-      el._resetTimer = setTimeout(reset, 2500);
-    } else {
-      el.textContent = address;
-      el.style.color = flashColor;
-      el.style.fontWeight = '600';
-      el.dataset.state = 'revealed';
-      el._resetTimer = setTimeout(reset, 5000);
-    }
+    }, 8000);
   }
 
   const bonusGallery = ['bonus/snail-1.png', 'bonus/snail-2.png', 'bonus/snail-3.png', 'bonus/snail-4.png', 'bonus/snail-5.png'];
