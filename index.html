@@ -501,6 +501,32 @@
     .floating-next-project .next-name { display: none; }
   }
 
+  /* Each project page takes small accents from its tile color on the home
+     page; the site's own green stays for nav, footer and buttons. */
+  #project-oh-shoot { --accent: #eb4d1f; --accent-soft: #fdf1ec; --accent-line: #f6cdbd; }
+
+  .hero-split { display: flex; align-items: center; gap: 40px; }
+  .hero-split .hero-text { flex: 1 1 0; min-width: 0; }
+  .hero-mockup { flex: 0 0 42%; width: 42%; height: auto; display: block; border-radius: 14px; }
+
+  .who-block { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 20px; align-items: stretch; }
+  .who-block .persona-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .who-block .persona-photo { width: 120px; height: 150px; }
+  .who-block .compare-table { grid-template-columns: 1fr; gap: 20px; }
+
+  .timeline-wrap { flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; }
+  .page.aligned .timeline-hint { font-size: 13px; color: #888; margin: 0 0 20px; }
+
+  .wf-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .wf-tab {
+    font: inherit; font-size: 14px; font-weight: 600; color: #666; cursor: pointer;
+    padding: 8px 16px; border-radius: 50px; border: 1px solid #ddd; background: #fff;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .wf-tab:hover { color: #1a1a1a; border-color: #bbb; }
+  .wf-tab.active { color: #fff; background: var(--accent, #49724F); border-color: var(--accent, #49724F); }
+  .wf-tab-panel img.screen-img { border-radius: 10px; }
+
   /* OH SHOOT: persona card, today vs. with Oh Shoot, runthrough timeline */
   .persona-card {
     display: flex; gap: 32px; align-items: center;
@@ -515,11 +541,11 @@
   .persona-tags { margin-top: 18px; }
   .persona-tags span, .tool-chips span {
     font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 50px;
-    background: #f1f5f0; color: #3b6d11;
+    background: var(--accent-soft, #f1f5f0); color: var(--accent, #3b6d11);
   }
   .compare-table { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .compare-col { border: 1px solid #e2e2e2; border-radius: 20px; padding: 28px; }
-  .compare-col-after { background: #f6f9f5; border-color: #d7e4d3; }
+  .compare-col-after { background: var(--accent-soft, #f6f9f5); border-color: var(--accent-line, #d7e4d3); }
   .page.aligned .compare-col p { margin: 0; font-size: 16px; line-height: 1.5; color: #444; padding: 12px 0; border-top: 1px solid #ececec; }
   .page.aligned .compare-col p.compare-head {
     border-top: none; padding: 0 0 12px; font-size: 13px; font-weight: 700;
@@ -527,14 +553,14 @@
   }
   .compare-col .tool-chips { margin-bottom: 16px; }
   .compare-col:not(.compare-col-after) .tool-chips span { background: #f2f2f2; color: #666; }
-  .tool-chips span.chip-app { background: #49724F; color: #ffffff; }
+  .tool-chips span.chip-app { background: var(--accent, #49724F); color: #ffffff; }
 
-  .runthrough { display: flex; gap: 56px; align-items: center; }
+  .runthrough { display: flex; gap: 56px; align-items: stretch; }
   .runthrough video {
     height: 520px; width: auto; flex-shrink: 0; border-radius: 38px;
     box-shadow: 0 4px 14px rgba(0,0,0,0.1); background: transparent;
   }
-  .timeline { list-style: none; margin: 0; padding: 0; position: relative; flex: 1; min-width: 0; }
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
   /* Dashed track, with a solid green fill that follows the video */
   .timeline::before {
     content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px;
@@ -542,17 +568,16 @@
   }
   .timeline::after {
     content: ''; position: absolute; left: 6px; top: 8px; width: 2px;
-    height: var(--tl-progress, 0px); background: #49724F; transition: height 0.25s linear;
+    height: var(--tl-progress, 0px); background: var(--accent, #49724F); transition: height 0.25s linear;
   }
-  .timeline li { position: relative; padding: 0 0 22px 34px; cursor: pointer; }
-  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li { position: relative; padding: 0 0 0 34px; cursor: pointer; }
   .timeline li::before {
     content: ''; position: absolute; left: 0; top: 3px; width: 10px; height: 10px; z-index: 1;
     border-radius: 50%; border: 2px solid #c8c8c8; background: #ffffff;
     transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   }
-  .timeline li.done::before { border-color: #49724F; }
-  .timeline li.active::before { background: #49724F; border-color: #49724F; transform: scale(1.25); }
+  .timeline li.done::before { border-color: var(--accent, #49724F); }
+  .timeline li.active::before { background: var(--accent, #49724F); border-color: var(--accent, #49724F); transform: scale(1.25); }
   .tl-name { display: block; font-size: 15px; font-weight: 600; color: #999; transition: color 0.2s ease; }
   .timeline li:hover .tl-name, .timeline li.done .tl-name { color: #555; }
   .timeline li.active .tl-name { color: #1a1a1a; }
@@ -563,6 +588,10 @@
   }
   .timeline li.active .tl-text { max-height: 80px; opacity: 1; margin-top: 4px; }
   @media (max-width: 700px) {
+    .hero-split { flex-direction: column; align-items: flex-start; }
+    .hero-mockup { width: 100%; flex: none; }
+    .who-block { grid-template-columns: 1fr; }
+    .timeline { justify-content: flex-start; gap: 18px; }
     .persona-card, .runthrough { flex-direction: column; align-items: flex-start; }
     .compare-table { grid-template-columns: 1fr; }
     .runthrough video { height: auto; width: 100%; max-width: 300px; }
@@ -964,14 +993,40 @@
 
 <!-- PROJECT DETAIL: OH SHOOT -->
 <section class="page aligned" id="project-oh-shoot">
-  <div class="detail-hero framed">
+  <div class="detail-hero framed hero-split">
+    <div class="hero-text">
     <h1><img src="oh-shoot/oh-shoot-logotype.png" alt="Oh Shoot" style="height:42px; width:auto; display:block;"></h1>
     <div class="meta">Mobile app for photographers and their clients</div>
     <p class="summary">Oh Shoot is an app for managing photoshoot days. It keeps everything a photographer needs in one place, helps align expectations with the client, and gets everyone to the shoot fully prepared. Gear lists, visuals and inspiration, a clear schedule for the day, and no misunderstandings or missed details along the way.</p>
+    </div>
+    <img class="hero-mockup" src="oh-shoot/oh-shoot.png" alt="Oh Shoot app screens">
   </div>
 
   <div class="detail-section">
-    <h3>Meet Nadia</h3>
+    <h3>A shoot, start to finish</h3>
+    <div class="runthrough">
+      <video id="ohShootRunthrough" muted playsinline controls preload="auto" onloadedmetadata="this.currentTime=0.1;">
+        <source src="oh-shoot/oh-shoot-runthrough.mp4" type="video/mp4">
+      </video>
+      <div class="timeline-wrap">
+        <p class="timeline-hint">Click a step to jump to it in the video</p>
+        <ol class="timeline" id="ohShootTimeline">
+        <li data-t="0"><span class="tl-name">Book</span><span class="tl-text">A couple calls about an engagement shoot. Nadia opens a project card and sends them a calendar invite.</span></li>
+        <li data-t="6.5"><span class="tl-name">Get inspired</span><span class="tl-text">Together they build a shared board and shape the direction of the shoot.</span></li>
+        <li data-t="17.5"><span class="tl-name">Payments</span><span class="tl-text">The quote, deposit and final payment are tracked in the same project.</span></li>
+        <li data-t="25.5"><span class="tl-name">Outfits</span><span class="tl-text">The bride builds a look card for every outfit, down to the accessories.</span></li>
+        <li data-t="30.5"><span class="tl-name">Schedule</span><span class="tl-text">Nadia plans the day by location, ordered by the light, and shares it with the couple.</span></li>
+        <li data-t="43"><span class="tl-name">Pack</span><span class="tl-text">Her gear list is ready from saved categories. She checks off what's packed.</span></li>
+        <li data-t="50.5"><span class="tl-name">Shoot day</span><span class="tl-text">On the day, the app opens on the live event with everything close at hand.</span></li>
+        <li data-t="56.5"><span class="tl-name">Deliver</span><span class="tl-text">Nadia uploads the gallery, the couple picks favorites and the final edits arrive in the app.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Who it's for</h3>
+    <div class="who-block">
     <div class="persona-card">
       <img class="persona-photo" src="oh-shoot/nadia.webp" alt="Nadia, the user persona" onclick="openLightbox(this.src, null, null, 'Meet Nadia')">
       <div class="persona-info">
@@ -981,10 +1036,6 @@
         <div class="persona-tags"><span>Visual</span><span>Systematic</span><span>Detail-focused</span></div>
       </div>
     </div>
-  </div>
-
-  <div class="detail-section">
-    <h3>The problem, and the approach</h3>
     <div class="compare-table">
       <div class="compare-col">
         <p class="compare-head">Today</p>
@@ -1001,28 +1052,11 @@
         <p>The client plans together with Nadia</p>
       </div>
     </div>
-  </div>
-
-  <div class="detail-section">
-    <h3>A shoot, start to finish</h3>
-    <div class="runthrough">
-      <video id="ohShootRunthrough" muted playsinline controls preload="auto" onloadedmetadata="this.currentTime=0.1;">
-        <source src="oh-shoot/oh-shoot-runthrough.mp4" type="video/mp4">
-      </video>
-      <ol class="timeline" id="ohShootTimeline">
-        <li data-t="0"><span class="tl-name">Book</span><span class="tl-text">A couple calls about an engagement shoot. Nadia opens a project card and sends them a calendar invite.</span></li>
-        <li data-t="6.5"><span class="tl-name">Get inspired</span><span class="tl-text">Together they build a shared board and shape the direction of the shoot.</span></li>
-        <li data-t="17.5"><span class="tl-name">Payments</span><span class="tl-text">The quote, deposit and final payment are tracked in the same project.</span></li>
-        <li data-t="25.5"><span class="tl-name">Outfits</span><span class="tl-text">The bride builds a look card for every outfit, down to the accessories.</span></li>
-        <li data-t="30.5"><span class="tl-name">Schedule</span><span class="tl-text">Nadia plans the day by location, ordered by the light, and shares it with the couple.</span></li>
-        <li data-t="43"><span class="tl-name">Pack</span><span class="tl-text">Her gear list is ready from saved categories. She checks off what's packed.</span></li>
-        <li data-t="50.5"><span class="tl-name">Shoot day</span><span class="tl-text">On the day, the app opens on the live event with everything close at hand.</span></li>
-        <li data-t="56.5"><span class="tl-name">Deliver</span><span class="tl-text">Nadia uploads the gallery, the couple picks favorites and the final edits arrive in the app.</span></li>
-      </ol>
     </div>
   </div>
 
   <div class="detail-section" style="max-width:1100px;">
+    <h3 style="margin-bottom:24px;">Key screens</h3>
     <div class="mobile-flow-row" style="display:flex; align-items:flex-start; justify-content:flex-start; gap:18px;">
 
       <div class="screen-item">
@@ -1032,7 +1066,6 @@
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
       </div>
-      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
       
       <div class="screen-item">
         <p class="screen-title">Get inspired</p>
@@ -1041,7 +1074,6 @@
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
       </div>
-      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
       
       <div class="screen-item" style="flex: 1.1;">
         <p class="screen-title">Plan &amp; Pack</p>
@@ -1062,8 +1094,6 @@
         </p>
       </div>
       
-      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
-      
       <div class="screen-item">
         <p class="screen-title">Schedule</p>
         <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/six-screens/schedule-screen.png', ohShootFlowGallery, 3, 'How it works')">
@@ -1071,7 +1101,6 @@
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
       </div>
-      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
       
       <div class="screen-item">
         <p class="screen-title">Deliver</p>
@@ -1091,21 +1120,21 @@
 
   <div class="detail-section" style="max-width:1100px; margin-top:50px;">
     <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:32px; flex-wrap:wrap;">
-      <div style="flex:0 1 260px; text-align:left;">
+      <div style="flex:1 1 0; min-width:0; max-width:320px; text-align:left;">
         <p class="video-caption">Urgent actions</p>
         <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/urgent-actions.png', ohShootDynamicGallery, 0, 'Main dynamic screen')">
           <img class="screen-img" src="oh-shoot/dynamic/urgent-actions.png" alt="Urgent actions screen">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
       </div>
-      <div style="flex:0 1 260px; text-align:left;">
+      <div style="flex:1 1 0; min-width:0; max-width:320px; text-align:left;">
         <p class="video-caption">Live events</p>
         <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/live-events.png', ohShootDynamicGallery, 1, 'Main dynamic screen')">
           <img class="screen-img" src="oh-shoot/dynamic/live-events.png" alt="Live events screen">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
       </div>
-      <div style="flex:0 1 260px; text-align:left;">
+      <div style="flex:1 1 0; min-width:0; max-width:320px; text-align:left;">
         <p class="video-caption">Later events, stay for later</p>
         <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/later-events.png', ohShootDynamicGallery, 2, 'Main dynamic screen')">
           <img class="screen-img" src="oh-shoot/dynamic/later-events.png" alt="Later events screen">
@@ -1118,19 +1147,19 @@
   <div class="detail-section" style="max-width:1100px; margin-top:100px;">
     <h3>Manage your projects and payments</h3>
     <div class="payments-stack-row" style="display:flex; align-items:flex-end; justify-content:flex-start; padding:20px 0 40px;">
-      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/client-cards.png', ohShootPaymentsGallery, 0, 'Manage your projects and payments')" style="width:220px; flex-shrink:0; z-index:1; transform:translateY(60px);">
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/client-cards.png', ohShootPaymentsGallery, 0, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:1; transform:translateY(60px);">
         <img class="screen-img" src="oh-shoot/project-payments/client-cards.png" alt="Client cards and tasks screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
-      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/manage-clients.png', ohShootPaymentsGallery, 1, 'Manage your projects and payments')" style="width:220px; flex-shrink:0; z-index:2; margin-left:-40px; transform:translateY(20px);">
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/manage-clients.png', ohShootPaymentsGallery, 1, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:2; margin-left:-48px; transform:translateY(20px);">
         <img class="screen-img" src="oh-shoot/project-payments/manage-clients.png" alt="Manage clients screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
-      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/project-status.png', ohShootPaymentsGallery, 2, 'Manage your projects and payments')" style="width:220px; flex-shrink:0; z-index:3; margin-left:-40px;">
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/project-status.png', ohShootPaymentsGallery, 2, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:3; margin-left:-48px;">
         <img class="screen-img" src="oh-shoot/project-payments/project-status.png" alt="Project status screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
-      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/payment.png', ohShootPaymentsGallery, 3, 'Manage your projects and payments')" style="width:220px; flex-shrink:0; z-index:4; margin-left:-40px; transform:translateY(-30px);">
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/payment.png', ohShootPaymentsGallery, 3, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:4; margin-left:-48px; transform:translateY(-30px);">
         <img class="screen-img" src="oh-shoot/project-payments/payment.png" alt="Payment confirmation screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
@@ -1139,28 +1168,14 @@
 
   <div class="detail-section" style="max-width:1100px; margin-top:80px;">
     <h3 style="margin-bottom: 24px;">Wireframes</h3>
-    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:24px;">
-      <div style="flex:1; min-width:0; text-align:center;">
-        <p class="video-caption">Low fidelity</p>
-        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/low-fidelity-wireframe.png', ohShootWireframesGallery, 0, 'Wireframes')">
-          <img class="screen-img" src="oh-shoot/wireframes/low-fidelity-wireframe.png" alt="Low fidelity wireframes">
-          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        </div>
-      </div>
-      <div style="flex:1; min-width:0; text-align:center;">
-        <p class="video-caption">Medium fidelity</p>
-        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/medium-fidelity-wireframes.png', ohShootWireframesGallery, 1, 'Wireframes')">
-          <img class="screen-img" src="oh-shoot/wireframes/medium-fidelity-wireframes.png" alt="Medium fidelity wireframes">
-          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        </div>
-      </div>
-      <div style="flex:1; min-width:0; text-align:center;">
-        <p class="video-caption">Final</p>
-        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/Final.png', ohShootWireframesGallery, 2, 'Wireframes')">
-          <img class="screen-img" src="oh-shoot/wireframes/Final.png" alt="Final wireframes">
-          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        </div>
-      </div>
+    <div class="wf-tabs" role="tablist">
+      <button class="wf-tab active" data-wf="0" role="tab">Low fidelity</button>
+      <button class="wf-tab" data-wf="1" role="tab">Medium fidelity</button>
+      <button class="wf-tab" data-wf="2" role="tab">Final</button>
+    </div>
+    <div class="screen-img-wrap wf-tab-panel" id="ohShootWireframe" onclick="openWireframeLightbox(this.querySelector('img').getAttribute('src'), ohShootWireframesGallery, Number(this.dataset.index || 0), 'Wireframes')">
+      <img class="screen-img" src="oh-shoot/wireframes/low-fidelity-wireframe.png" alt="Oh Shoot wireframes">
+      <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
     </div>
   </div>
 
@@ -2077,6 +2092,21 @@
     video.addEventListener('timeupdate', update);
     video.addEventListener('seeked', update);
     update();
+  })();
+
+  // Oh Shoot wireframes: tabs swap one large image.
+  (function setUpWireframeTabs() {
+    const panel = document.getElementById('ohShootWireframe');
+    if (!panel) return;
+    const img = panel.querySelector('img');
+    document.querySelectorAll('.wf-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const i = Number(tab.dataset.wf);
+        document.querySelectorAll('.wf-tab').forEach((t) => t.classList.toggle('active', t === tab));
+        img.src = ohShootWireframesGallery[i];
+        panel.dataset.index = i;
+      });
+    });
   })();
 
   function openVideoLightbox(src, title) {
