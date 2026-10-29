@@ -680,6 +680,29 @@
     .fm-icons { grid-template-columns: repeat(3, 1fr); }
   }
 
+  /* Fig-Monkey responsive demo: the browser frame narrows from desktop to
+     phone width while the desktop page fades into the mobile page, then back */
+  .page.aligned .fm-resp-caption { text-align: left !important; }
+  .fm-resp-stage { display: flex; justify-content: center; background: #fffbe0; border-radius: 18px; padding: 28px; }
+  .fm-resp-frame {
+    width: 100%; height: 440px; display: flex; flex-direction: column; overflow: hidden;
+    background: #fff; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    transition: width 1.6s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .fm-resp-frame.is-mobile { width: 230px; }
+  .fm-resp-bar { flex: none; height: 22px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: #f0f0f0; }
+  .fm-resp-bar span { width: 7px; height: 7px; border-radius: 50%; background: #cfcfcf; }
+  .fm-resp-screen { position: relative; flex: 1; overflow: hidden; }
+  /* Both screen recordings fill the frame and keep playing while it resizes */
+  .fm-resp-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: opacity 1.2s ease; }
+  .fm-resp-mobile { opacity: 0; }
+  .fm-resp-frame.is-mobile .fm-resp-mobile { opacity: 1; }
+  .fm-resp-frame.is-mobile .fm-resp-desktop { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .fm-resp-frame, .fm-resp-screen video { transition: none; }
+  }
+  @media (max-width: 700px) { .fm-resp-frame { height: 320px; } .fm-resp-stage { padding: 16px; } }
+
   /* Zoomed lightbox images are moved by dragging */
   #lightbox-img-scroll { scrollbar-width: none; }
   #lightbox-img-scroll::-webkit-scrollbar { display: none; }
@@ -1575,6 +1598,20 @@
                   <img class="screen-img" src="fig-monkey/design-system/landing-page-typography.webp" alt="Landing page typography" style="border-radius: 8px; width: 100%; display: block;">
                   <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- The landing page adapting from desktop to mobile -->
+      <div class="detail-section">
+        <p class="video-caption fm-resp-caption">From desktop to mobile</p>
+        <div class="fm-resp-stage" aria-label="The landing page resizing from desktop to mobile">
+          <div class="fm-resp-frame">
+            <div class="fm-resp-bar"><span></span><span></span><span></span></div>
+            <div class="fm-resp-screen">
+              <video class="fm-resp-desktop" src="fig-monkey/fig-monkey-landing-page-video.mp4" autoplay muted playsinline preload="metadata" aria-hidden="true"></video>
+              <video class="fm-resp-mobile" src="fig-monkey/landing-page-mobile.mp4" autoplay muted playsinline preload="metadata" aria-hidden="true"></video>
             </div>
           </div>
         </div>
@@ -2517,6 +2554,78 @@
     if (on) { v.play().catch(() => {}); } else { v.pause(); v.currentTime = 0; }
   }
 
+  // Videos only play on the page you are looking at. Leaving a project (or
+  // switching to another tab or window) pauses them, so nothing keeps playing
+  // sound in the background. Looping videos that start on their own resume
+  // when you come back, unless you paused one yourself: that one stays paused.
+  function autoPause(v) {
+    if (v.paused) return;
+    v._autoPausing = true;
+    v.pause();
+  }
+  // The browser's own autoplay would restart these videos whenever they
+  // come back into view, ignoring a manual pause, so we take over: the
+  // attribute is swapped for a marker and playback is handled here only.
+  document.querySelectorAll('video[autoplay]').forEach((v) => {
+    v.removeAttribute('autoplay');
+    v.autoplay = false;
+    v.dataset.autoloop = '1';
+  });
+  document.querySelectorAll('video').forEach((v) => {
+    v.addEventListener('pause', () => {
+      if (v._autoPausing) { v._autoPausing = false; return; }
+      v.dataset.userPaused = '1';
+    });
+    v.addEventListener('play', () => { delete v.dataset.userPaused; });
+  });
+  function syncPageVideos() {
+    document.querySelectorAll('.page:not(.active) video').forEach(autoPause);
+    if (document.hidden) return;
+    document.querySelectorAll('.page.active video[data-autoloop]').forEach((v) => {
+      if (!v.dataset.userPaused) v.play().catch(() => {});
+    });
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      document.querySelectorAll('video').forEach(autoPause);
+    } else {
+      syncPageVideos();
+    }
+  });
+  syncPageVideos();
+
+  // Fig-Monkey responsive demo. The mobile recording is longer than the
+  // desktop one, so it runs faster to stay on the same part of the page;
+  // both restart together. The frame switches view every few seconds.
+  (function setUpResponsiveDemo() {
+    const frame = document.querySelector('.fm-resp-frame');
+    if (!frame) return;
+    const desk = frame.querySelector('.fm-resp-desktop');
+    const mob = frame.querySelector('.fm-resp-mobile');
+    const match = () => {
+      if (desk.duration && mob.duration) mob.playbackRate = mob.duration / desk.duration;
+    };
+    desk.addEventListener('loadedmetadata', match);
+    mob.addEventListener('loadedmetadata', match);
+    match();
+    desk.addEventListener('ended', () => {
+      desk.currentTime = 0;
+      mob.currentTime = 0;
+      if (!desk.dataset.userPaused) { desk.play().catch(() => {}); mob.play().catch(() => {}); }
+    });
+    // Nudge the mobile clip back in step if it drifts
+    desk.addEventListener('timeupdate', () => {
+      if (!desk.duration || !mob.duration) return;
+      const target = desk.currentTime / desk.duration * mob.duration;
+      if (Math.abs(mob.currentTime - target) > 0.4) mob.currentTime = target;
+    });
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) setInterval(() => {
+      if (document.hidden || !frame.closest('.page.active')) return;
+      frame.classList.toggle('is-mobile');
+    }, 4500);
+  })();
+
   function openVideoLightbox(src, title) {
     openLightbox('VIDEO:' + src, null, null, title);
   }
@@ -2907,16 +3016,6 @@
     document.getElementById('figMonkeyRestick').style.display = 'none';
   }
 
-  document.addEventListener('visibilitychange', () => {
-    const heroVideo = document.getElementById('figMonkeyHeroVideo');
-    if (!heroVideo) return;
-    if (document.hidden) {
-      figMonkeyWasPlayingBeforeHidden = !heroVideo.paused;
-      heroVideo.pause();
-    } else if (figMonkeyWasPlayingBeforeHidden && document.getElementById('project-fig-monkey').classList.contains('active')) {
-      heroVideo.play().catch(() => {});
-    }
-  });
 
   function showPage(id, pushHistory) {
     if (pushHistory === undefined) pushHistory = true;
@@ -2946,6 +3045,7 @@
 
     updateNextProjectButton();
     positionNextProjectButton();
+    syncPageVideos();
 
     if (id === 'about') {
       requestAnimationFrame(fitAboutContent);
@@ -2953,7 +3053,8 @@
 
     if (id === 'project-fig-monkey') {
       const heroVideo = document.getElementById('figMonkeyHeroVideo');
-      if (heroVideo) {
+      // A video you paused yourself stays paused when you come back
+      if (heroVideo && !heroVideo.dataset.userPaused) {
         heroVideo.muted = false;
         heroVideo.volume = 0.2;
         heroVideo.play().catch(() => {
@@ -2968,7 +3069,7 @@
       // playing silently in the background on every other page.
       const heroVideo = document.getElementById('figMonkeyHeroVideo');
       if (heroVideo) {
-        heroVideo.pause();
+        autoPause(heroVideo);
         heroVideo.muted = true;
       }
     }
