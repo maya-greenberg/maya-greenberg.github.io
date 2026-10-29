@@ -10,10 +10,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
 </noscript>
 <style>
   * { box-sizing: border-box; }
@@ -650,22 +652,33 @@
   .stack-caption span { display: block; font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
   .payments-stack-row { padding-top: 40px !important; }
 
-  /* Vinyl: a small turntable in the header corner. Click and the arm drops
-     onto the record and it spins; click again to stop. No sound. */
-  .turntable {
-    position: absolute; top: 28px; right: 32px; width: 84px; height: 70px;
-    padding: 0; border: none; background: none; cursor: pointer;
+  /* Vinyl header: title, artist right under it, then the usual meta and summary */
+  /* Marker-style title, close to the hand-drawn lettering on the album itself */
+  .vinyl-title { font-family: 'Covered By Your Grace', cursive; font-size: 54px; font-weight: 400; color: #1a1a1a; line-height: 1; margin: 0; text-align: left; }
+  .vinyl-artist { font-size: 16px; font-weight: 500; color: #a01c1c; margin: 6px 0 18px; }
+  #project-vinyl .detail-hero .meta { margin-bottom: 14px; }
+
+  /* Fig-Monkey: two clear parts, the landing page and the asset in Figma */
+  .page.aligned .detail-section p.fm-part-label {
+    font-size: 14px; font-weight: 600; color: #b39500; margin: 0 0 4px; max-width: none;
   }
-  .turntable svg { width: 100%; height: 100%; overflow: visible; }
-  .tt-record { transform-origin: 68px 50px; animation: tt-spin 1.8s linear infinite; animation-play-state: paused; }
-  .turntable.playing .tt-record { animation-play-state: running; }
-  /* At rest the arm is swung fully off the record; playing, it sits on it */
-  .tt-arm { transform-origin: 18px 26px; transform: rotate(34deg); transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1); }
-  .turntable.playing .tt-arm { transform: rotate(-18deg); }
-  .turntable:hover .tt-arm { transform: rotate(26deg); }
-  .turntable.playing:hover .tt-arm { transform: rotate(-18deg); }
-  @keyframes tt-spin { to { transform: rotate(360deg); } }
-  @media (max-width: 700px) { .turntable { top: 18px; right: 18px; width: 64px; height: 54px; } }
+  .fm-landing { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
+  .fm-landing-page { display: flex; flex-direction: column; }
+  .fm-page-scroll { contain: none; height: 640px; flex: none; border-radius: 10px; }
+  .fm-icons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .fm-icon { display: flex; flex-direction: column; align-items: center; gap: 8px; background: #fffbe0; border-radius: 14px; padding: 14px 6px 12px; }
+  /* The real icon animations from the landing page; they play on hover.
+     Multiply blends the clip's white background into the card colour. */
+  .fm-icon video { width: 64px; height: 64px; mix-blend-mode: multiply; pointer-events: none; }
+  .fm-icon { cursor: pointer; }
+  .fm-icon span { font-size: 13px; font-weight: 600; color: #00023b; text-align: center; line-height: 1.3; }
+  .page.aligned .fm-landing .video-caption { text-align: left !important; }
+  .fm-style-guide { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  @media (max-width: 1100px) {
+    .fm-landing { grid-template-columns: 1fr; }
+    .fm-page-scroll { height: 480px; }
+    .fm-icons { grid-template-columns: repeat(3, 1fr); }
+  }
 
   /* Zoomed lightbox images are moved by dragging */
   #lightbox-img-scroll { scrollbar-width: none; }
@@ -1520,8 +1533,10 @@
         <p class="summary" style="max-width: 680px;">I created an asset for the Figma community that lets other users have a little monkey friend in their project. Think Tamagotchi, but for designers who forget to blink, drink water, or get up from their chair for a break.</p>
       </div>
 
-      <div class="detail-section" style="margin-top: 50px; margin-bottom: 12px;">
-        <h3 style="margin-bottom: 0; text-align: left;">Fig-Monkey landing page</h3>
+      <div class="detail-section fm-part" style="margin-top: 56px; margin-bottom: 20px;">
+        <p class="fm-part-label">Part one</p>
+        <h3 style="margin-bottom: 6px;">The landing page</h3>
+        <p style="margin: 0;">A page that introduces Fig-Monkey to the Figma community and gets people to adopt him.</p>
       </div>
 
       <div class="detail-media">
@@ -1530,29 +1545,46 @@
         </video>
       </div>
 
-      <!-- LANDING PAGE STYLE GUIDE (Dropdown full width) -->
-      <div class="detail-section">
-        <details class="subtle-dropdown" style="display:block; box-sizing:border-box;">
-          <summary>Landing page style guide</summary>
-          <div style="margin-top: 24px;">
-            <div style="display: flex; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-wrap: wrap;">
-              <div style="flex: 1; min-width: 280px; text-align: left;">
-                <p class="design-sys-label">Color palette</p>
-                <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-color-palete.png', figMonkeyStyleGuideGallery, 0, 'Landing page style guide')">
+      <div class="detail-section fm-landing">
+        <div class="fm-landing-page">
+          <p class="video-caption">Full page</p>
+          <div class="wf-scroll fm-page-scroll" onclick="openWireframeLightbox('fig-monkey/landing-page-full.webp', null, null, 'Fig-Monkey landing page')">
+            <img src="fig-monkey/landing-page-full.webp" alt="The full Fig-Monkey landing page">
+          </div>
+        </div>
+        <div class="fm-landing-side">
+          <p class="video-caption">Icons</p>
+          <div class="fm-icons">
+            <div class="fm-icon" onmouseenter="playIcon(this, true)" onmouseleave="playIcon(this, false)" onclick="playIcon(this)"><video src="fig-monkey/icons/anim/leaf.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video><span>Idle animations</span></div>
+            <div class="fm-icon" onmouseenter="playIcon(this, true)" onmouseleave="playIcon(this, false)" onclick="playIcon(this)"><video src="fig-monkey/icons/anim/banana.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video><span>Pet and feed</span></div>
+            <div class="fm-icon" onmouseenter="playIcon(this, true)" onmouseleave="playIcon(this, false)" onclick="playIcon(this)"><video src="fig-monkey/icons/anim/checklist.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video><span>Checklist</span></div>
+            <div class="fm-icon" onmouseenter="playIcon(this, true)" onmouseleave="playIcon(this, false)" onclick="playIcon(this)"><video src="fig-monkey/icons/anim/timer.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video><span>Focus timer</span></div>
+            <div class="fm-icon" onmouseenter="playIcon(this, true)" onmouseleave="playIcon(this, false)" onclick="playIcon(this)"><video src="fig-monkey/icons/anim/drink.mp4" muted loop playsinline preload="auto" aria-hidden="true"></video><span>Break reminders</span></div>
+          </div>
+          <div class="fm-style-guide">
+            <div>
+          <p class="video-caption">Color palette</p>
+          <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-color-palete.png', figMonkeyStyleGuideGallery, 0, 'Landing page style guide')">
                   <img class="screen-img" src="fig-monkey/design-system/landing-page-color-palete.png" alt="Landing page color palette" style="border-radius: 8px; width: 100%; display: block;">
                   <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 </div>
-              </div>
-              <div style="flex: 1; min-width: 280px; text-align: left;">
-                <p class="design-sys-label">Typography</p>
-                <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-typography.png', figMonkeyStyleGuideGallery, 1, 'Landing page style guide')">
+            </div>
+            <div>
+          <p class="video-caption">Typography</p>
+          <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-typography.png', figMonkeyStyleGuideGallery, 1, 'Landing page style guide')">
                   <img class="screen-img" src="fig-monkey/design-system/landing-page-typography.png" alt="Landing page typography" style="border-radius: 8px; width: 100%; display: block;">
                   <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 </div>
-              </div>
             </div>
           </div>
-        </details>
+        </div>
+      </div>
+
+      <!-- Part 2: the asset itself, inside a Figma file -->
+      <div class="detail-section fm-part" style="margin-top: 80px; margin-bottom: 20px;">
+        <p class="fm-part-label">Part two</p>
+        <h3 style="margin-bottom: 6px;">The asset in Figma</h3>
+        <p style="margin: 0;">Fig-Monkey is there to gently remind you to reconnect with your own needs while you work, and to lighten up an atmosphere that can otherwise get pretty stressful.</p>
       </div>
 
       <!-- VIDEOS ROW SECTION -->
@@ -1627,12 +1659,6 @@
         </div>
       </div>
 
-      <!-- CONCEPT -->
-      <div class="detail-section">
-        <h3>The concept</h3>
-        <p>Fig-Monkey is there to gently remind you to reconnect with your own needs while you work, and to lighten up an atmosphere that can otherwise get pretty stressful.</p>
-      </div>
-
       <!-- DOCUMENTATION -->
       <div class="detail-section">
         <h3>Documentation &amp; Customization</h3>
@@ -1661,11 +1687,10 @@
         </div>
       </div>
 
-      <!-- EARLY SKETCHES (Dropdown full width) -->
+      <!-- EARLY SKETCHES -->
       <div class="detail-section">
-        <details class="subtle-dropdown" style="display:block; box-sizing:border-box;">
-          <summary>Early sketches</summary>
-          <div style="margin-top: 20px;">
+        <h3>Early sketches</h3>
+          <div>
             <p style="margin-bottom: 20px; text-align: left;">
               At first, I didn't think about the technical constraint of placing a free-roaming character directly onto the canvas. I then decided to embrace the preview window, allowing the monkey to live right inside the interface as part of the Figma project.
             </p>
@@ -1680,7 +1705,6 @@
               </div>
             </div>
           </div>
-        </details>
       </div>
 
     </div>
@@ -2008,28 +2032,8 @@
 <!-- PROJECT DETAIL: VINYL -->
 <section class="page aligned" id="project-vinyl">
   <div class="detail-hero framed">
-    <button class="turntable" onclick="this.classList.toggle('playing')" aria-label="Spin the record" title="Spin the record">
-      <svg viewBox="0 0 120 100" aria-hidden="true">
-        <g class="tt-record">
-          <circle cx="68" cy="50" r="40" fill="#1a1a1a"/>
-          <circle cx="68" cy="50" r="31" fill="none" stroke="#3a3a3a" stroke-width="1"/>
-          <circle cx="68" cy="50" r="24" fill="none" stroke="#3a3a3a" stroke-width="1"/>
-          <path d="M68 14 A36 36 0 0 1 100 32" stroke="#6a6a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <circle cx="68" cy="50" r="13" fill="#a01c1c"/>
-          <circle cx="68" cy="50" r="2.4" fill="#fff"/>
-        </g>
-        <g class="tt-arm">
-          <!-- A white outline keeps the dark arm visible on top of the dark record -->
-          <path d="M18 18 L18 30 L30 74" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <rect x="12" y="6" width="12" height="12" rx="2" fill="#1a1a1a"/>
-          <circle cx="18" cy="26" r="5" fill="#1a1a1a" stroke="#ffffff" stroke-width="1.5"/>
-          <path d="M18 18 L18 30 L30 74" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <rect x="25" y="72" width="11" height="9" rx="1.5" fill="#1a1a1a" stroke="#ffffff" stroke-width="1.5" transform="rotate(-20 30 76)"/>
-        </g>
-      </svg>
-    </button>
-    <h1 style="font-family:'Italiana', serif; font-size:40px; -webkit-text-stroke:1px #1a1a1a; color:#1a1a1a; line-height:1.15; margin:0 0 2px; text-align:left;">Kids Against The Machine</h1>
-    <div style="font-size:15px; color:#a01c1c; font-style:italic; margin-bottom:16px; text-align:left;">by Noga Erez</div>
+    <h1 class="vinyl-title">Kids Against The Machine</h1>
+    <div class="vinyl-artist">by Noga Erez</div>
     <div class="meta" style="text-align:left;">Vinyl design</div>
     <p class="summary" style="margin:0; text-align:left;">Handmade vinyl packaging built around Noga Erez's fully acoustic album, Kids Against the Machine.</p>
   </div>
@@ -2505,6 +2509,14 @@
     }, 300);
   })();
 
+  // Fig-Monkey icons: play the animation on hover (or tap), rest on the first frame
+  function playIcon(card, on) {
+    const v = card.querySelector('video');
+    if (!v) return;
+    if (on === undefined) on = v.paused;
+    if (on) { v.play().catch(() => {}); } else { v.pause(); v.currentTime = 0; }
+  }
+
   function openVideoLightbox(src, title) {
     openLightbox('VIDEO:' + src, null, null, title);
   }
@@ -2691,8 +2703,8 @@
       scroll.scrollTop = 0;
       scroll.scrollLeft = 0;
     } else {
-      // Zoom is measured from the image's fitted size on screen right now
-      lightboxBaseWidth = img.getBoundingClientRect().width;
+      // Zoom steps are measured from the fitted size, taken on the first step only
+      if (lightboxZoomIndex === 1) lightboxBaseWidth = img.getBoundingClientRect().width;
       // Remember which spot was clicked, so the zoom grows smoothly toward it
       const before = img.getBoundingClientRect();
       const box = scroll.getBoundingClientRect();
