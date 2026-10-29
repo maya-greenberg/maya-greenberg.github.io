@@ -171,25 +171,43 @@
   /* HOME HERO */
   .hero { text-align: center; padding: 10px 20px 45px; }
   .hero .tagline {
-    font-weight: 600; font-size: 21px; color: #3b6d11;
-    margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-weight: 500; font-size: clamp(15px, 3.25vw, 23.5px); letter-spacing: -0.1px; color: #3b6d11;
+    margin-top: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .hero .tagline .sparkle-icon { transition: transform 0.45s ease; transform-origin: center; position: relative; display: inline-block; width: 17px; height: 22px; }
+  .hero .tagline .sparkle-icon { transition: transform 0.45s ease; transform-origin: center; position: relative; display: inline-block; width: 0.95em; height: 1.2em; }
   /* The two sparkles are cut from the same image and pop in one after the other */
   .sparkle-part { position: absolute; inset: 0; width: 100%; height: 100%; animation: sparkle-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; }
   /* The image holds two sparkles side by side: left one up top, right one lower down */
-  .sparkle-big { clip-path: inset(0 50% 0 0); transform-origin: 21% 35%; animation-delay: 1.1s; }
-  .sparkle-small { clip-path: inset(0 0 0 50%); transform-origin: 76% 67%; animation-delay: 1.35s; }
+  .sparkle-big { clip-path: inset(0 50% 0 0); transform-origin: 21% 35%; animation-delay: 0.5s; }
+  .sparkle-small { clip-path: inset(0 0 0 50%); transform-origin: 76% 67%; animation-delay: 0.6s; }
   @keyframes sparkle-pop { from { transform: scale(0); } to { transform: scale(1); } }
   /* Home first load: the name, then the line, then everything else */
-  .intro .hero .tagline { animation: intro-fade 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.75s backwards; }
-  .intro #home .project-row.reveal { transition-delay: 0.9s; }
+  /* Home first load, in order: name, green line, tagline, sparkles, first cards */
+  .intro .hero-name { animation: name-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s backwards; }
+  @keyframes name-in {
+    from { opacity: 0; filter: blur(14px); transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; filter: none; transform: none; }
+  }
+  .intro .hero .tagline { animation: intro-fade 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.32s backwards; }
+  .intro #home .project-row.reveal:nth-child(1) { transition-delay: 0.5s; }
+  .intro #home .project-row.reveal:nth-child(2) { transition-delay: 0.62s; }
+  .intro #home .project-row.reveal:nth-child(3) { transition-delay: 0.74s; }
+  #about.active .about-hero-container,
+  #about.active .about-content-container > *,
+  #about.active .about-portrait { animation: name-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+  #about.active .about-hero-container { animation-delay: 0.05s; }
+  #about.active .about-content-container > :nth-child(1) { animation-delay: 0.25s; }
+  #about.active .about-content-container > :nth-child(2) { animation-delay: 0.35s; }
+  #about.active .about-content-container > :nth-child(3) { animation-delay: 0.45s; }
+  #about.active .about-content-container > :nth-child(4) { animation-delay: 0.55s; }
+  #about.active .about-portrait { animation-delay: 0.4s; }
   @keyframes intro-fade {
-    from { opacity: 0; filter: blur(8px); letter-spacing: 0.04em; }
-    to { opacity: 1; filter: blur(0); letter-spacing: normal; }
+    from { opacity: 0; filter: blur(8px); }
+    to { opacity: 1; filter: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .sparkle-part, .intro .hero .tagline { animation: none; }
+    .sparkle-part, .intro .hero .tagline, .intro .hero-name { animation: none; }
+    #about.active .about-hero-container, #about.active .about-content-container > *, #about.active .about-portrait { animation: none !important; }
   }
   .hero .tagline .sparkle-icon.pulse { transform: scale(1.08); }
 
@@ -245,7 +263,7 @@
   .bonus-illustration-row { display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
   .bonus-illustration-row .screen-img-wrap { flex: 1; min-width: 140px; max-width: 200px; }
   .bonus-video-row { display: flex; gap: 20px; align-items: flex-start; justify-content: flex-start; flex-wrap: wrap; }
-  .bonus-video-row video { width: 100%; max-width: 270px; border-radius: 8px; display: block; }
+  .bonus-video-row video { flex: 1 1 0; min-width: 0; width: 100%; border-radius: 8px; display: block; }
   .bonus-video-row.single video { max-width: 100%; }
   @media (min-width: 700px) {
     .bonus-video-row { flex-wrap: nowrap; }
@@ -464,7 +482,13 @@
   .page.aligned h3 { text-align: left !important; }
   /* One type scale for project pages: section title 28, caption 16, notes 14 */
   .page.aligned .detail-section > h3, .page.aligned .bonus-frame h3 { font-size: 28px; letter-spacing: -0.3px; margin-bottom: 20px; }
-  .page.aligned .hover-hint, .page.aligned .timeline-hint { font-size: 14px !important; color: #888; }
+  .page.aligned .timeline-hint { font-size: 14px !important; color: #888; }
+  .page.aligned .hover-hint {
+    display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px;
+    font-size: 14px; font-weight: 600; color: #1a1a1a;
+    background: #f2f2f2; padding: 7px 14px; border-radius: 50px;
+  }
+  .hover-hint svg { width: 14px; height: 14px; fill: #1a1a1a; }
   .page.aligned .spicehaus-video-row { width: 100%; left: 0; transform: none; }
   .page.aligned .mood-carousel { max-width: none; gap: 24px; }
   .page.aligned .mood-carousel img { flex: 1; min-width: 0; max-width: none; }
@@ -587,8 +611,8 @@
   /* Soft entrance: blocks fade up out of a light blur the first time they
      scroll into view (added in JS, so nothing hides if the script fails). */
   .reveal {
-    opacity: 0; transform: translateY(12px); filter: blur(2px);
-    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.6s ease;
+    opacity: 0; transform: translateY(16px); filter: blur(6px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.8s ease;
   }
   .reveal.in { opacity: 1; transform: none; filter: none; }
 
@@ -598,10 +622,11 @@
   .hero-line-cover {
     position: absolute; left: 8.6%; width: 45%; top: 90.3%; height: 6.5%;
     background: #ffffff; transform-origin: right center; transform: scaleX(0);
-    animation: hero-line-draw 0.6s cubic-bezier(0.6, 0, 0.3, 1) 0.35s backwards;
+    animation: hero-line-draw 0.4s cubic-bezier(0.6, 0, 0.3, 1) 0.18s backwards;
   }
   @keyframes hero-line-draw { from { transform: scaleX(1); } to { transform: scaleX(0); } }
   @media (prefers-reduced-motion: reduce) { .hero-line-cover { display: none; } }
+  .intro-done .hero-line-cover, .intro-done .sparkle-part { animation: none; }
 
   /* "Copied!" bubble above the email link */
   .copied-pop {
@@ -610,13 +635,41 @@
     padding: 4px 10px; border-radius: 50px; opacity: 0; pointer-events: none;
   }
   .copied-pop.show { animation: copied-pop 1.8s ease forwards; }
+  nav .copied-pop { bottom: auto; top: calc(100% + 8px); }
   @keyframes copied-pop {
     0% { opacity: 0; transform: translate(-50%, 4px); }
     15%, 75% { opacity: 1; transform: translate(-50%, 0); }
     100% { opacity: 0; transform: translate(-50%, -2px); }
   }
 
+  /* Overlapping payment screens: a short title and line above each one */
+  .page.aligned .detail-section p.stack-caption {
+    width: 210px; max-width: none; margin: 0 auto 12px; text-align: center;
+    font-size: 14px; line-height: 1.45; color: #888;
+  }
+  .stack-caption span { display: block; font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+  .payments-stack-row { padding-top: 40px !important; }
+
+  /* Vinyl: a small turntable in the header corner. Click and the arm drops
+     onto the record and it spins; click again to stop. No sound. */
+  .turntable {
+    position: absolute; top: 28px; right: 32px; width: 84px; height: 70px;
+    padding: 0; border: none; background: none; cursor: pointer;
+  }
+  .turntable svg { width: 100%; height: 100%; overflow: visible; }
+  .tt-record { transform-origin: 68px 50px; animation: tt-spin 1.8s linear infinite; animation-play-state: paused; }
+  .turntable.playing .tt-record { animation-play-state: running; }
+  /* At rest the arm is swung fully off the record; playing, it sits on it */
+  .tt-arm { transform-origin: 18px 26px; transform: rotate(34deg); transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1); }
+  .turntable.playing .tt-arm { transform: rotate(-18deg); }
+  .turntable:hover .tt-arm { transform: rotate(26deg); }
+  .turntable.playing:hover .tt-arm { transform: rotate(-18deg); }
+  @keyframes tt-spin { to { transform: rotate(360deg); } }
+  @media (max-width: 700px) { .turntable { top: 18px; right: 18px; width: 64px; height: 54px; } }
+
   /* Zoomed lightbox images are moved by dragging */
+  #lightbox-img-scroll { scrollbar-width: none; }
+  #lightbox-img-scroll::-webkit-scrollbar { display: none; }
   #lightbox-img-scroll[style*="overflow: auto"] img { cursor: grab !important; -webkit-user-drag: none; user-select: none; }
   #lightbox-img-scroll.dragging img { cursor: grabbing !important; }
 
@@ -948,6 +1001,26 @@
     #figMonkeyUnstickLeft, #figMonkeyUnstickRight, #figMonkeyRestick { display: none !important; }
   }
 
+  @media (max-width: 700px) {
+    nav { padding: 16px 20px 10px; font-size: 14px; }
+    .nav-left { gap: 20px; }
+    .nav-right { gap: 16px; font-size: 13px; }
+    .hero { padding: 6px 20px 28px; }
+    /* On phones the tagline wraps inside the width of the name */
+    .hero .tagline { display: block; margin: 2px auto 0; max-width: 80%; text-align: center; }
+    .hero .tagline .sparkle-hover-zone { display: inline-flex !important; vertical-align: middle; padding: 0 0 0 4px !important; }
+    .project-list { padding: 0 16px 48px; gap: 16px; }
+    .project-row { border-radius: 16px; }
+    .project-thumb img { max-height: 190px; object-fit: cover; }
+    .project-info { padding: 18px 20px 22px !important; }
+    .project-info .label { font-size: 11px; margin-bottom: 6px; }
+    .project-info h2 { font-size: 24px; margin: 0 0 6px; }
+    .project-info p { font-size: 14px; line-height: 1.5; }
+    .site-footer { flex-direction: column; align-items: flex-start !important; gap: 10px !important; padding: 22px 20px !important; }
+    .site-footer > div:last-child { flex-wrap: wrap; gap: 8px 24px !important; }
+    .floating-back-work, .floating-next-project, .floating-scrollTop { font-size: 13px; padding: 7px 14px; }
+  }
+
   @media (max-width: 480px) {
     /* On the narrowest phones, even 2-up is too tight - drop to one per row. */
     .mobile-flow-row .screen-item { flex: 0 0 100% !important; }
@@ -1171,7 +1244,7 @@
       <div class="project-info">
         <div class="label">Extra work</div>
         <h2>Bonus Projects</h2>
-        <p>Illustration, motion and stop motion pieces from my studies.</p>
+        <p>Side pieces in illustration, motion and stop motion.</p>
       </div>
     </div>
   </div>
@@ -1381,18 +1454,22 @@
     <h3>Manage your projects and payments</h3>
     <div class="payments-stack-row" style="display:flex; align-items:flex-end; justify-content:flex-start; padding:20px 0 40px;">
       <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/client-cards.png', ohShootPaymentsGallery, 0, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:1; transform:translateY(60px);">
+        <p class="stack-caption"><span>Home</span>Every client card shows where the project stands</p>
         <img class="screen-img" src="oh-shoot/project-payments/client-cards.png" alt="Client cards and tasks screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/manage-clients.png', ohShootPaymentsGallery, 1, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:2; margin-left:-48px; transform:translateY(20px);">
+        <p class="stack-caption"><span>Switch client</span>Project and payment status, other clients a tap away</p>
         <img class="screen-img" src="oh-shoot/project-payments/manage-clients.png" alt="Manage clients screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/project-status.png', ohShootPaymentsGallery, 2, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:3; margin-left:-48px;">
+        <p class="stack-caption"><span>Project status</span>Quote, deposit and payment, step by step</p>
         <img class="screen-img" src="oh-shoot/project-payments/project-status.png" alt="Project status screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
       <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/payment.png', ohShootPaymentsGallery, 3, 'Manage your projects and payments')" style="width:280px; flex-shrink:0; z-index:4; margin-left:-48px; transform:translateY(-30px);">
+        <p class="stack-caption"><span>Confirmations</span>See when a quote is approved or a payment comes in</p>
         <img class="screen-img" src="oh-shoot/project-payments/payment.png" alt="Payment confirmation screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       </div>
@@ -1402,11 +1479,11 @@
   <div class="detail-section" style="max-width:1100px; margin-top:80px;">
     <h3 style="margin-bottom: 24px;">Wireframes</h3>
     <div class="wf-tabs" role="tablist">
-      <button class="wf-tab active" data-wf="2" role="tab">Final</button>
+      <button class="wf-tab active" data-wf="0" role="tab">Final</button>
       <button class="wf-tab" data-wf="1" role="tab">Medium fidelity</button>
-      <button class="wf-tab" data-wf="0" role="tab">Low fidelity</button>
+      <button class="wf-tab" data-wf="2" role="tab">Low fidelity</button>
     </div>
-    <div class="screen-img-wrap wf-tab-panel" id="ohShootWireframe" data-index="2" onclick="openWireframeLightbox(this.querySelector('img').getAttribute('src'), ohShootWireframesGallery, Number(this.dataset.index || 0), 'Wireframes')">
+    <div class="screen-img-wrap wf-tab-panel" id="ohShootWireframe" data-index="0" onclick="openWireframeLightbox(this.querySelector('img').getAttribute('src'), ohShootWireframesGallery, Number(this.dataset.index || 0), 'Wireframes')">
       <img class="screen-img" src="oh-shoot/wireframes/Final.png" alt="Oh Shoot wireframes">
       <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
     </div>
@@ -1480,7 +1557,7 @@
 
       <!-- VIDEOS ROW SECTION -->
       <div class="detail-section" style="margin-top: 60px;">
-        <p style="font-size: 13px; color: #888; margin: 0 0 16px; text-align: left;" class="hover-hint">Play with Hover</p>
+        <p class="hover-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6 1.5L10 19z"/></svg><span>Hover to play</span></p>
         <div class="monkey-videos-container">
 
           <!-- 1. Petting -->
@@ -1562,7 +1639,7 @@
         <p>Designing a public asset meant making the tool accessible and intuitive for others. I wrote clear onboarding instructions covering setup and timer customization, while building out flexible color options so users could easily adapt the monkey to their personal taste and screens.</p>
       </div>
       <div class="detail-media">
-        <div style="cursor: pointer;" onclick="openWireframeLightbox('fig-monkey/fig-monkey-asset-instructions.png', null, null, 'Documentation &amp; Customization', [1, 1.8, 2.6, 3.8, 5])">
+        <div style="cursor: pointer;" onclick="openWireframeLightbox('fig-monkey/fig-monkey-asset-instructions.png', null, null, 'Documentation &amp; Customization', [1, 1.8, 2.6, 3.8])">
           <img id="instructions-img" src="fig-monkey/fig-monkey-asset-instructions.png" alt="Fig-Monkey onboarding documentation overview" style="display:block; width:100%; border-radius:8px;">
         </div>
       </div>
@@ -1810,7 +1887,7 @@
 
   <div class="detail-section">
     <h3 style="text-align:center; margin-bottom:24px;">Animations</h3>
-    <p style="font-size: 13px; color: #888; margin: 0 0 16px; text-align: left;" class="hover-hint">Play with Hover</p>
+    <p class="hover-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6 1.5L10 19z"/></svg><span>Hover to play</span></p>
     <div class="monkey-videos-container anim-grid-2x2">
       <div class="monkey-video-card">
         <video muted loop playsinline preload="metadata" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:100%; border-radius:8px; display:block; cursor:pointer;">
@@ -1931,6 +2008,26 @@
 <!-- PROJECT DETAIL: VINYL -->
 <section class="page aligned" id="project-vinyl">
   <div class="detail-hero framed">
+    <button class="turntable" onclick="this.classList.toggle('playing')" aria-label="Spin the record" title="Spin the record">
+      <svg viewBox="0 0 120 100" aria-hidden="true">
+        <g class="tt-record">
+          <circle cx="68" cy="50" r="40" fill="#1a1a1a"/>
+          <circle cx="68" cy="50" r="31" fill="none" stroke="#3a3a3a" stroke-width="1"/>
+          <circle cx="68" cy="50" r="24" fill="none" stroke="#3a3a3a" stroke-width="1"/>
+          <path d="M68 14 A36 36 0 0 1 100 32" stroke="#6a6a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="68" cy="50" r="13" fill="#a01c1c"/>
+          <circle cx="68" cy="50" r="2.4" fill="#fff"/>
+        </g>
+        <g class="tt-arm">
+          <!-- A white outline keeps the dark arm visible on top of the dark record -->
+          <path d="M18 18 L18 30 L30 74" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <rect x="12" y="6" width="12" height="12" rx="2" fill="#1a1a1a"/>
+          <circle cx="18" cy="26" r="5" fill="#1a1a1a" stroke="#ffffff" stroke-width="1.5"/>
+          <path d="M18 18 L18 30 L30 74" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <rect x="25" y="72" width="11" height="9" rx="1.5" fill="#1a1a1a" stroke="#ffffff" stroke-width="1.5" transform="rotate(-20 30 76)"/>
+        </g>
+      </svg>
+    </button>
     <h1 style="font-family:'Italiana', serif; font-size:40px; -webkit-text-stroke:1px #1a1a1a; color:#1a1a1a; line-height:1.15; margin:0 0 2px; text-align:left;">Kids Against The Machine</h1>
     <div style="font-size:15px; color:#a01c1c; font-style:italic; margin-bottom:16px; text-align:left;">by Noga Erez</div>
     <div class="meta" style="text-align:left;">Vinyl design</div>
@@ -1946,7 +2043,7 @@
     <h3 style="text-align:center; margin-bottom:24px;">Vinyl sleeve &amp; double-sided insert</h3>
   </div>
   <div class="detail-media" style="margin-top:0;">
-    <img src="vinyl/mockup.png" alt="Kids Against The Machine vinyl mockup" style="width:100%; display:block; border-radius:8px; cursor:pointer;" onclick="openWireframeLightbox(this.src, null, null, 'Vinyl sleeve &amp; double-sided insert', [1, 1.8, 2.6, 3.8, 5])">
+    <img src="vinyl/mockup.png" alt="Kids Against The Machine vinyl mockup" style="width:100%; display:block; border-radius:8px; cursor:pointer;" onclick="openWireframeLightbox(this.src, null, null, 'Vinyl sleeve &amp; double-sided insert', [1, 1.8, 2.6, 3.8])">
   </div>
 
   <div class="detail-section boxed" style="border:1px solid #e2e2e2; border-radius:20px; padding:45px 50px;">
@@ -2016,26 +2113,26 @@
   <div class="detail-section" style="margin-top: 30px;">
     <div class="bonus-frame">
       <p class="bonus-kind">Illustration</p>
-      <h3>The Caterpillar and the Giraffe</h3>
+      <h3>The Giraffe and the Caterpillar</h3>
       <p class="bonus-subtitle">Inspired by Kitty Crowther</p>
       <div class="bonus-illustration-row">
-        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-1.png', bonusGallery, 0, 'The Caterpillar and the Giraffe')">
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('bonus/snail-1.png', bonusGallery, 0, 'The Giraffe and the Caterpillar')">
           <img class="screen-img" src="bonus/snail-1.png" alt="Illustration 1">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
-        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-2.png', bonusGallery, 1, 'The Caterpillar and the Giraffe')">
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('bonus/snail-2.png', bonusGallery, 1, 'The Giraffe and the Caterpillar')">
           <img class="screen-img" src="bonus/snail-2.png" alt="Illustration 2">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
-        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-3.png', bonusGallery, 2, 'The Caterpillar and the Giraffe')">
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('bonus/snail-3.png', bonusGallery, 2, 'The Giraffe and the Caterpillar')">
           <img class="screen-img" src="bonus/snail-3.png" alt="Illustration 3">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
-        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-4.png', bonusGallery, 3, 'The Caterpillar and the Giraffe')">
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('bonus/snail-4.png', bonusGallery, 3, 'The Giraffe and the Caterpillar')">
           <img class="screen-img" src="bonus/snail-4.png" alt="Illustration 4">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
-        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-5.png', bonusGallery, 4, 'The Caterpillar and the Giraffe')">
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('bonus/snail-5.png', bonusGallery, 4, 'The Giraffe and the Caterpillar')">
           <img class="screen-img" src="bonus/snail-5.png" alt="Illustration 5">
           <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
@@ -2149,7 +2246,8 @@
 
 <script>
 
-  const LIGHTBOX_ZOOM_LEVELS = [1, 1.6, 2.2, 2.8];
+  // One click punches straight in (to the clicked spot), the next click zooms back out
+  const LIGHTBOX_ZOOM_LEVELS = [1, 5];
   let currentZoomLevels = LIGHTBOX_ZOOM_LEVELS;
   let lightboxZoomIndex = 0;
   let lightboxBaseWidth = 0;
@@ -2279,7 +2377,7 @@
       }
     });
     if (isTouch) {
-      document.querySelectorAll('.hover-hint').forEach((el) => { el.textContent = 'Tap to play'; });
+      document.querySelectorAll('.hover-hint span').forEach((el) => { el.textContent = 'Tap to play'; });
     }
   })();
 
@@ -2380,7 +2478,7 @@
   (function setUpReveal() {
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const targets = document.querySelectorAll('.hero, .project-row, .page > .detail-hero, .page > .detail-section, .page > .detail-media');
+    const targets = document.querySelectorAll('.project-row, .page > .detail-hero, .page > .detail-section, .page > .detail-media');
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
@@ -2391,7 +2489,11 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.body.classList.add('intro');
-    setTimeout(() => document.body.classList.remove('intro'), 2500);
+    setTimeout(() => {
+      document.body.classList.remove('intro');
+      // Coming back to Work later should not replay the name and sparkles
+      document.body.classList.add('intro-done');
+    }, 2600);
     targets.forEach((t) => { t.classList.add('reveal'); io.observe(t); });
     // Safety net: whatever is already on screen shortly after load is shown,
     // even if the observer is slow to report it.
@@ -2561,7 +2663,7 @@
   }
   function handleLightboxImgClick(e) {
     e.stopPropagation();
-    if (lightboxZoomEnabled) cycleLightboxZoom();
+    if (lightboxZoomEnabled) cycleLightboxZoom(e);
   }
   function resetLightboxZoom() {
     lightboxZoomIndex = 0;
@@ -2575,7 +2677,7 @@
     scroll.scrollTop = 0;
     scroll.scrollLeft = 0;
   }
-  function cycleLightboxZoom() {
+  function cycleLightboxZoom(e) {
     lightboxZoomIndex = (lightboxZoomIndex + 1) % currentZoomLevels.length;
     const scale = currentZoomLevels[lightboxZoomIndex];
     const img = document.getElementById('lightbox-img');
@@ -2589,12 +2691,37 @@
       scroll.scrollTop = 0;
       scroll.scrollLeft = 0;
     } else {
-      if (!lightboxBaseWidth) lightboxBaseWidth = img.clientWidth;
+      // Zoom is measured from the image's fitted size on screen right now
+      lightboxBaseWidth = img.getBoundingClientRect().width;
+      // Remember which spot was clicked, so the zoom grows smoothly toward it
+      const before = img.getBoundingClientRect();
+      const box = scroll.getBoundingClientRect();
+      const fx = e ? (e.clientX - before.left) / before.width : 0.5;
+      const fy = e ? (e.clientY - before.top) / before.height : 0.5;
+      const px = e ? e.clientX - box.left : box.width / 2;
+      const py = e ? e.clientY - box.top : box.height / 2;
+      const ratio = before.height / before.width;
+      const from = before.width;
+      const to = lightboxBaseWidth * scale;
+      img.style.width = from + 'px';
       img.style.maxWidth = 'none';
       img.style.maxHeight = 'none';
-      img.style.width = (lightboxBaseWidth * scale) + 'px';
-      img.style.cursor = 'zoom-in';
+      img.style.cursor = 'zoom-out';
       scroll.style.overflow = 'auto';
+      const start = performance.now();
+      const duration = 450;
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const w = from + (to - from) * ease;
+        img.style.width = w + 'px';
+        scroll.scrollLeft = fx * w - px;
+        scroll.scrollTop = fy * w * ratio - py;
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      // Make sure it lands on the final zoom even if animation frames are paused
+      setTimeout(() => step(start + duration), duration + 50);
     }
   }
 
@@ -2611,6 +2738,7 @@
     // One click does everything: shows the address, copies it (with a small
     // "Copied!" bubble), then opens the visitor's mail app. Where no mail app
     // is set up, the address is still on screen and already copied.
+    if (el.dataset.baseColor === undefined) el.dataset.baseColor = el.style.color;
     el.textContent = address;
     el.style.color = flashColor;
     el.style.fontWeight = '600';
@@ -2633,7 +2761,7 @@
 
     el._resetTimer = setTimeout(() => {
       el.textContent = 'Email';
-      el.style.color = '';
+      el.style.color = el.dataset.baseColor;
       el.style.fontWeight = '';
     }, 8000);
   }
@@ -2659,9 +2787,9 @@
     'oh-shoot/project-payments/payment.png'
   ];
   const ohShootWireframesGallery = [
-    'oh-shoot/wireframes/low-fidelity-wireframe.png',
+    'oh-shoot/wireframes/Final.png',
     'oh-shoot/wireframes/medium-fidelity-wireframes.png',
-    'oh-shoot/wireframes/Final.png'
+    'oh-shoot/wireframes/low-fidelity-wireframe.png'
   ];
 
   const finalDinnerWireframesGallery = [
@@ -2705,7 +2833,7 @@
   const galleryItemLabels = new Map();
   galleryItemLabels.set(ohShootFlowGallery, ['Book', 'Get inspired', 'Plan & Pack', 'Schedule', 'Deliver']);
   galleryItemLabels.set(ohShootDynamicGallery, ['Urgent actions', 'Live events', 'Later events']);
-  galleryItemLabels.set(ohShootWireframesGallery, ['Low fidelity', 'Medium fidelity', 'Final']);
+  galleryItemLabels.set(ohShootWireframesGallery, ['Final', 'Medium fidelity', 'Low fidelity']);
   galleryItemLabels.set(finalDinnerWireframesGallery, ['Landing page', 'App']);
   galleryItemLabels.set(finalDinnerColorGallery, ['Card', 'Hero', 'Screen', 'Map screen']);
   galleryItemLabels.set(spicehausFlowGallery, ['Browse shop', 'Item page', 'Add to cart', 'Checkout', 'Confirmation']);
