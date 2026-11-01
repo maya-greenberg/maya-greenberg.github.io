@@ -377,6 +377,8 @@
     border-radius: 4px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; background: #fff;
   }
   .hover-video-wrap:hover video.flow-hover-video { opacity: 1; pointer-events: auto; }
+  /* Spicehaus flow: the step playing on its own shows its recording */
+  .hover-video-wrap.sweep-on video.flow-hover-video { opacity: 1; }
   
   /* Interactive Indicator Badge */
   .interactive-badge {
@@ -588,6 +590,12 @@
   .fm-grid .monkey-video-card { flex: 0 0 calc(25% - 11px) !important; margin-bottom: 0 !important; }
   @media (max-width: 1400px) {
     .fm-grid .monkey-video-card { flex-basis: calc(33.333% - 10px) !important; }
+  }
+  /* The automatic sweep looks just like hovering: the playing card lifts,
+     the others dim a little */
+  .monkey-videos-container.sweeping .monkey-video-card video { opacity: 0.7 !important; }
+  .monkey-videos-container.sweeping .monkey-video-card.sweep-on video {
+    opacity: 1 !important; transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.14);
   }
   @media (max-width: 700px) {
     .fm-grid .monkey-video-card { flex-basis: calc(50% - 10px) !important; }
@@ -1060,7 +1068,7 @@
     nav { padding: 16px 20px 10px; font-size: 14px; }
     .nav-left { gap: 20px; }
     .nav-right { gap: 16px; font-size: 13px; }
-    .hero { padding: 6px 20px 28px; min-height: calc(100svh - 200px); }
+    .hero { padding: 0 20px 20px; min-height: 0; }
     /* On phones the tagline wraps inside the width of the name */
     .hero .tagline { display: block; margin: 2px auto 0; max-width: 80%; text-align: center; text-wrap: balance; font-size: 16px; }
     .hero .tagline .sparkle-hover-zone { display: inline-flex !important; vertical-align: middle; padding: 0 0 0 4px !important; }
@@ -1102,6 +1110,21 @@
     #ohShootRunthrough { max-width: 240px; margin: 0 auto; display: block; }
     .detail-hero .summary { font-size: 16px; line-height: 1.6; }
     .persona-photo { width: 110px; height: 136px; }
+    /* Fig-Monkey's floating corner monkey is left out on phones */
+    #figMonkeyVideoWrap { display: none !important; }
+    /* Vinyl motion video: full width instead of a small square */
+    #project-vinyl .detail-media:has(video) { padding-left: 0 !important; padding-right: 0 !important; }
+    #project-vinyl .detail-media video { width: 100% !important; }
+    /* Bonus: no frames around each piece, so the work gets the whole width */
+    .bonus-frame { border: none; border-radius: 0; padding: 0; margin-bottom: 56px; }
+    .bonus-video-row video { flex: 1 1 100% !important; }
+    /* The Giraffe and the Caterpillar: one illustration at a time, swiped sideways */
+    .bonus-illustration-row {
+      flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto;
+      scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -20px; padding: 0 20px 8px;
+    }
+    .bonus-illustration-row::-webkit-scrollbar { display: none; }
+    .bonus-illustration-row .screen-img-wrap { flex: 0 0 78vw !important; max-width: none !important; scroll-snap-align: start; scroll-margin-left: 20px; }
     /* About: full-width column that scrolls, portrait first, text at a phone size */
     #about-fit-area { overflow: visible; align-items: flex-start; }
     .about-main-container { width: 100%; max-width: none; padding: 8px 24px 40px; }
@@ -2149,7 +2172,7 @@
 
   <div class="detail-section" style="margin-top: 30px;">
     <div class="bonus-frame">
-      <p class="bonus-kind">Illustration</p>
+      <p class="bonus-kind">Illustration · colored pencils</p>
       <h3>The Giraffe and the Caterpillar</h3>
       <p class="bonus-subtitle">Inspired by Kitty Crowther</p>
       <div class="bonus-illustration-row">
@@ -2180,7 +2203,7 @@
       <p class="bonus-kind">Motion</p>
       <h3>Foreign Substance</h3>
       <p class="bonus-subtitle">Mock opening titles for a fictional series, made with plastic bags and practical effects</p>
-      <div class="bonus-video-row">
+      <div class="bonus-video-row" id="foreignSubstance">
         <video controls playsinline preload="auto" poster="bonus/episode-1.webp">
           <source src="bonus/episode-1.mp4" type="video/mp4">
         </video>
@@ -2194,11 +2217,10 @@
     </div>
 
     <div class="bonus-frame" style="margin-bottom:0;">
-      <p class="bonus-kind">Stop motion</p>
-      <h3>Loves me, loves me not</h3>
-      <p class="bonus-subtitle">Made with felt</p>
+      <p class="bonus-kind">Stop motion animation with felt puppets</p>
+      <h3 style="margin-bottom: 28px !important;">Loves me, loves me not</h3>
       <div class="bonus-video-row single">
-        <video controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();">
+        <video controls playsinline preload="auto" data-scrollplay="sound">
           <source src="bonus/loves-me.mp4" type="video/mp4">
         </video>
       </div>
@@ -2558,7 +2580,8 @@
   (function setUpReveal() {
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const targets = document.querySelectorAll('.project-row, .page > .detail-hero, .page > .detail-section, .page > .detail-media');
+    // Fig-Monkey's content sits inside one tall frame, so its inner blocks are added too
+    const targets = document.querySelectorAll('.project-row, .page > .detail-hero, .page > .detail-section, .page > .detail-media, .fm-content-col > .detail-section, .fm-content-col > .detail-media');
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
@@ -2567,7 +2590,9 @@
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    // Any part on screen counts: a percentage would never be reached by a block
+    // taller than the window (the whole Fig-Monkey page is one block).
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
     document.body.classList.add('intro');
     setTimeout(() => {
       document.body.classList.remove('intro');
@@ -2621,7 +2646,7 @@
     document.querySelectorAll('.page:not(.active) video').forEach(autoPause);
     if (document.hidden) return;
     document.querySelectorAll('.page.active video[data-autoloop]').forEach((v) => {
-      if (!v.dataset.userPaused) v.play().catch(() => {});
+      if (!v.dataset.userPaused && v.offsetParent !== null) v.play().catch(() => {});
     });
   }
   document.addEventListener('visibilitychange', () => {
@@ -2641,32 +2666,244 @@
   function scrollPlay(v) {
     if (v.dataset.scrollplay !== 'sound') { v.muted = true; v.play().catch(() => {}); return; }
     v.muted = false;
-    v.volume = 0.2;
+    fadeVolume(v, 0, 0.2);
     v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+  }
+  // Moves a video's volume smoothly from one level to another
+  function fadeVolume(v, from, to, ms = 600, done) {
+    clearInterval(v._fade);
+    const start = performance.now();
+    v.volume = from;
+    v._fade = setInterval(() => {
+      const t = Math.min(1, (performance.now() - start) / ms);
+      v.volume = from + (to - from) * t;
+      if (t === 1) { clearInterval(v._fade); if (done) done(); }
+    }, 30);
   }
   const scrollPlayer = new IntersectionObserver((entries) => {
     entries.forEach(({ target: v, isIntersecting }) => {
       if (isIntersecting) {
-        if (!v.dataset.userPaused) scrollPlay(v);
+        if (!v.dataset.userPaused && !v.dataset.hold) scrollPlay(v);
       } else {
         autoPause(v);
       }
     });
   }, { threshold: 0.4 });
-  // Vinyl sketches: every few seconds one of them slowly fades to its original
-  // and back, in turn, so it's clear there is something to see under each.
+  // Vinyl sketches: once they're on screen (after a short look at the edited
+  // versions), one at a time slowly fades to its original and back, so it's
+  // clear there is something to see under each. Stops when scrolled away.
   (function cycleSketchReveals() {
     const wraps = [...document.querySelectorAll('.hover-reveal-wrap')];
     if (!wraps.length) return;
-    let i = 0;
-    setInterval(() => {
-      if (!document.getElementById('project-vinyl').classList.contains('active')) return;
+    let i = 0, timer = null, startDelay = null;
+    function step() {
       const w = wraps[i % wraps.length];
       w.classList.add('auto-reveal');
       setTimeout(() => w.classList.remove('auto-reveal'), 2400);
       i++;
-    }, 4000);
+    }
+    new IntersectionObserver(([entry]) => {
+      clearTimeout(startDelay);
+      clearInterval(timer);
+      if (entry.isIntersecting) {
+        startDelay = setTimeout(() => { step(); timer = setInterval(step, 4000); }, 1500);
+      }
+    }, { threshold: 0.5 }).observe(wraps[0].parentElement);
   })();
+
+  // Slides a sideways row to a position with a soft ease in and out. Snapping
+  // is switched off while it moves, so it doesn't jump at the end.
+  function glideRow(row, left, ms = 750) {
+    cancelAnimationFrame(row._glide);
+    const from = row.scrollLeft;
+    const to = Math.max(0, Math.min(left, row.scrollWidth - row.clientWidth));
+    const start = performance.now();
+    row.style.scrollSnapType = 'none';
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / ms);
+      row.scrollLeft = from + (to - from) * ease(t);
+      if (t < 1) row._glide = requestAnimationFrame(tick);
+      else row.style.scrollSnapType = '';
+    };
+    row._glide = requestAnimationFrame(tick);
+  }
+
+  // How long the page waits, after the mouse leaves a group of animations,
+  // before they start playing on their own again
+  const IDLE_RESUME_MS = 8000;
+
+  // Fig-Monkey and Final Dinner animations: while the grid is on screen, a
+  // "hover" moves across the cards by itself, left to right and row by row,
+  // playing each animation once. Hovering takes over; after leaving, the cards
+  // stay still and the sweep only resumes (with the next card) after a while.
+  document.querySelectorAll('.fm-grid, .anim-grid-2x2').forEach(function setUpSweep(grid) {
+    const LOOP = true;  // false: one round, then it stops
+    const cards = [...grid.querySelectorAll('.monkey-video-card')];
+    const vids = cards.map((c) => c.querySelector('video'));
+    let i = 0, running = false, inView = false, userHere = false, done = false;
+    vids.forEach((v) => { v.loop = false; });
+    function clear() {
+      grid.classList.remove('sweeping');
+      cards.forEach((c) => c.classList.remove('sweep-on'));
+    }
+    function show() {
+      if (!running) return;
+      grid.classList.add('sweeping');
+      cards.forEach((c, k) => c.classList.toggle('sweep-on', k === i));
+      vids[i].currentTime = 0;
+      vids[i].play().catch(() => {});
+    }
+    function start() {
+      if (running || done || !inView || userHere) return;
+      running = true;
+      show();
+    }
+    function stop() {
+      if (!running) return;
+      running = false;
+      vids[i].pause();
+      clear();
+    }
+    vids.forEach((v, k) => v.addEventListener('ended', () => {
+      if (userHere && v.matches(':hover')) { v.currentTime = 0; v.play().catch(() => {}); return; }
+      if (!running || k !== i) return;
+      i++;
+      if (i >= cards.length) {
+        i = 0;
+        if (!LOOP) { done = true; stop(); return; }
+      }
+      show();
+    }));
+    let idleTimer = null;
+    grid.addEventListener('mouseenter', () => { userHere = true; clearTimeout(idleTimer); stop(); });
+    grid.addEventListener('mouseleave', () => {
+      userHere = false;
+      idleTimer = setTimeout(() => { i = (i + 1) % cards.length; start(); }, IDLE_RESUME_MS);
+    });
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView) start(); else stop();
+    }, { threshold: 0.4 }).observe(grid);
+  });
+
+  // Foreign Substance: while on screen, each episode plays a few seconds,
+  // muted, then hands over to the next. Hovering one keeps it playing and
+  // fades its sound in; leaving fades the sound out and the round goes on.
+  (function setUpForeignPreview() {
+    const row = document.getElementById('foreignSubstance');
+    if (!row) return;
+    const vids = [...row.querySelectorAll('video')];
+    const PREVIEW_MS = 4000;
+    let i = 0, timer = null, inView = false, hovered = null;
+    vids.forEach((v) => { v.muted = true; v.loop = true; });
+    function next() {
+      clearTimeout(timer);
+      if (!inView || hovered) return;
+      vids.forEach((v, k) => { if (k !== i) autoPause(v); });
+      const v = vids[i];
+      if (!v.dataset.userPaused) { v.muted = true; v.play().catch(() => {}); }
+      timer = setTimeout(() => { autoPause(v); i = (i + 1) % vids.length; next(); }, PREVIEW_MS);
+    }
+    vids.forEach((v, k) => {
+      v.addEventListener('mouseenter', () => {
+        hovered = v;
+        clearTimeout(timer);
+        vids.forEach((o) => { if (o !== v) autoPause(o); });
+        v.muted = false;
+        fadeVolume(v, 0, 0.35);
+        v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+      });
+      v.addEventListener('mouseleave', () => {
+        hovered = null;
+        fadeVolume(v, v.volume, 0, 500, () => { v.muted = true; });
+        i = (k + 1) % vids.length;
+        timer = setTimeout(next, 600);
+      });
+    });
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView) next();
+      else { clearTimeout(timer); vids.forEach(autoPause); }
+    }, { threshold: 0.4 }).observe(row);
+  })();
+
+  // Spicehaus user flow: while on screen, the steps that have a recording
+  // play on their own, once each, in the order Confirmation, Item page, then
+  // the loading screen, and round again. Hovering the flow stops it; it picks
+  // up with the next step after a while without hover.
+  (function setUpFlowSweep() {
+    const order = ['confirmation', 'item-page', 'splashscreen'];
+    const vids = order.map((name) => [...document.querySelectorAll('video.flow-hover-video')]
+      .find((v) => v.outerHTML.includes(name + '.mp4'))).filter(Boolean);
+    if (!vids.length) return;
+    const flow = vids[0].closest('.screen-item').parentElement;
+    let i = 0, running = false, inView = false, userHere = false, idleTimer = null;
+    vids.forEach((v) => { v.loop = false; });
+    function show() {
+      if (!running) return;
+      vids.forEach((v, k) => v.closest('.hover-video-wrap').classList.toggle('sweep-on', k === i));
+      // On phones the flow is a sideways row: slide it to the step that plays
+      if (flow.scrollWidth > flow.clientWidth + 1) {
+        const item = vids[i].closest('.screen-item');
+        const fr = flow.getBoundingClientRect(), ir = item.getBoundingClientRect();
+        glideRow(flow, flow.scrollLeft + (ir.left - fr.left) - 20);
+      }
+      vids[i].currentTime = 0;
+      vids[i].play().catch(() => {});
+    }
+    function start() {
+      if (running || !inView || userHere) return;
+      running = true;
+      show();
+    }
+    function stop() {
+      running = false;
+      vids.forEach((v) => { v.pause(); v.closest('.hover-video-wrap').classList.remove('sweep-on'); });
+    }
+    vids.forEach((v, k) => v.addEventListener('ended', () => {
+      if (userHere && v.matches(':hover')) { v.currentTime = 0; v.play().catch(() => {}); return; }
+      if (!running || k !== i) return;
+      i = (i + 1) % vids.length;
+      show();
+    }));
+    flow.addEventListener('mouseenter', () => { userHere = true; clearTimeout(idleTimer); stop(); });
+    flow.addEventListener('mouseleave', () => {
+      userHere = false;
+      idleTimer = setTimeout(() => { i = (i + 1) % vids.length; start(); }, IDLE_RESUME_MS);
+    });
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView) start(); else stop();
+    }, { threshold: 0.4 }).observe(flow);
+  })();
+
+  // Phones: sideways swipe rows of screens slide on their own, slowly, one
+  // screen at a time, so it is clear there is more to the right. Touching or
+  // swiping the row stops it; it carries on after a while without touch.
+  // On wider screens these rows are not scrollable, so nothing happens.
+  document.querySelectorAll('.mobile-flow-row, .dynamic-row, .payments-stack-row, .bonus-illustration-row').forEach((row) => {
+    if (row.querySelector('video.flow-hover-video')) return;  // the Spicehaus flow slides with its own sweep
+    let inView = false, heldUntil = 0;
+    const hold = () => { heldUntil = Date.now() + IDLE_RESUME_MS; };
+    ['pointerdown', 'touchstart', 'wheel'].forEach((ev) => row.addEventListener(ev, hold, { passive: true }));
+    new IntersectionObserver(([entry]) => {
+      // On arrival, a few seconds to look at the first screen before it moves
+      if (entry.isIntersecting && !inView) heldUntil = Math.max(heldUntil, Date.now() + 3000);
+      inView = entry.isIntersecting;
+    }, { threshold: 0.4 }).observe(row);
+    setInterval(() => {
+      if (!inView || Date.now() < heldUntil || row.scrollWidth <= row.clientWidth + 1) return;
+      const items = [...row.children].filter((el) => el.offsetWidth > 0);
+      const fr = row.getBoundingClientRect();
+      const centers = items.map((el) => el.getBoundingClientRect().left - (fr.left + 20));
+      const current = centers.reduce((best, c, k) => (Math.abs(c) < Math.abs(centers[best]) ? k : best), 0);
+      const next = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2 ? 0 : current + 1;
+      const r = items[next].getBoundingClientRect();
+      // Aim where the row's own snapping would land (screen's left edge, 20px in)
+      glideRow(row, row.scrollLeft + (r.left - fr.left) - 20, next === 0 ? 1100 : 750);
+    }, 3500);
+  });
 
   // Side-by-side videos act as one unit: they play together (muted, looping)
   // while the row is on screen and stop together once it is scrolled past.
@@ -3140,7 +3377,8 @@
     if (id === 'project-fig-monkey') {
       const heroVideo = document.getElementById('figMonkeyHeroVideo');
       // A video you paused yourself stays paused when you come back
-      if (heroVideo && !heroVideo.dataset.userPaused) {
+      // Not on phones, where the corner monkey is hidden
+      if (heroVideo && !heroVideo.dataset.userPaused && heroVideo.offsetParent !== null) {
         heroVideo.muted = false;
         heroVideo.volume = 0.2;
         heroVideo.play().catch(() => {
