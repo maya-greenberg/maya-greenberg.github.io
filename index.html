@@ -607,6 +607,10 @@
     cursor: pointer; opacity: 0.85;
   }
   .video-expand-btn svg { width: 15px; height: 15px; }
+  /* Phones, Loves me: after a long watch the rest of the screen dims slightly
+     (the class is only ever added on touch screens) */
+  .bonus-video-row video { transition: box-shadow 2.5s ease; }
+  .bonus-video-row video.cinema-dim { position: relative; z-index: 50; box-shadow: 0 0 0 100vmax rgba(0,0,0,0.45); }
   /* Touch screens only: on desktop, hover already plays the video. */
   @media (hover: hover) {
     .video-expand-btn { display: none; }
@@ -1043,8 +1047,8 @@
        squeezing into a fixed 150px column. */
     .about-content-row { flex-wrap: wrap !important; }
     .about-portrait { margin: 0 auto 12px !important; }
-    #about-footer { flex-wrap: wrap !important; gap: 12px !important; justify-content: flex-start !important; }
-    .about-footer-links { flex-wrap: wrap !important; gap: 12px 20px !important; }
+    #about-footer { flex-direction: column; align-items: flex-start !important; gap: 10px !important; }
+    .about-footer-links { width: 100%; justify-content: space-between; flex-wrap: wrap !important; gap: 8px 16px !important; }
 
     /* Fig-Monkey's corner video used to sit beside the content in a
        flex row - on a phone screen there's no room for that, so the
@@ -1080,7 +1084,8 @@
     .project-info h2 { font-size: 24px; margin: 0 0 6px; }
     .project-info p { font-size: 14px; line-height: 1.5; }
     .site-footer { flex-direction: column; align-items: flex-start !important; gap: 10px !important; padding: 22px 20px !important; }
-    .site-footer > div:last-child { flex-wrap: wrap; gap: 8px 24px !important; }
+    /* Email, LinkedIn and the name spread evenly across the full width */
+    .site-footer > div:last-child { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px !important; }
     .floating-back-work, .floating-next-project, .floating-scrollTop { font-size: 13px; padding: 7px 14px; }
   }
 
@@ -1098,6 +1103,9 @@
       flex-direction: row !important; flex-wrap: nowrap !important; align-items: flex-start !important;
       overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
       gap: 14px !important; margin: 0 -20px; padding: 0 20px 8px !important;
+      /* Start at the first screen: a centered row would push its first
+         screens out past the left edge, where they can't be scrolled to */
+      justify-content: flex-start !important;
     }
     .mobile-flow-row::-webkit-scrollbar, .payments-stack-row::-webkit-scrollbar, .dynamic-row::-webkit-scrollbar { display: none; }
     .dynamic-row > div { flex: 0 0 200px !important; max-width: none !important; scroll-snap-align: start; scroll-margin-left: 20px; }
@@ -1362,7 +1370,7 @@
   </div>
   
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -1559,7 +1567,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -1796,7 +1804,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -1928,7 +1936,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -2076,7 +2084,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -2153,7 +2161,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -2228,7 +2236,7 @@
   </div>
 
   <footer class="site-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:22px 60px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
-    <div style="font-weight:600; color:#1a1a1a;">Let's connect</div>
+    <div style="font-weight:600; color:#1a1a1a;">Let's connect!</div>
     <div style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" style="color:#444; text-decoration:none;">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444; text-decoration:none;">LinkedIn</a>
@@ -2275,7 +2283,7 @@
   </div>
   
   <footer id="about-footer">
-    <div style="font-weight:600;">Let's connect</div>
+    <div style="font-weight:600;">Let's connect!</div>
     <div class="about-footer-links" style="display:flex; align-items:center; gap:32px;">
       <a href="#" onclick="copyEmail(event, this)" class="footer-link">Email</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" class="footer-link">LinkedIn</a>
@@ -2437,7 +2445,106 @@
     });
     if (isTouch) {
       document.querySelectorAll('.hover-hint span').forEach((el) => { el.textContent = 'Tap to play'; });
+      document.querySelectorAll('.interactive-badge, .hover-badge').forEach((el) => {
+        el.textContent = el.textContent.trim() === 'Hover' ? 'Tap' : 'tap';
+      });
+      document.querySelectorAll('#project-vinyl p').forEach((el) => {
+        if (el.textContent.trim() === 'Hover to see the unedited originals.') el.textContent = 'Tap to see the unedited originals.';
+      });
     }
+  })();
+
+  // Touch screens: after a tap the browser also sends pretend mouse
+  // enter/leave events. On hover-to-play pieces that tap would play the video
+  // (pretend hover) and then the click would pause it again, so it took two
+  // taps. Those pretend events are dropped there, and the tap alone decides.
+  (function dropPretendHoverOnTouch() {
+    if (!window.matchMedia('(hover: none)').matches) return;
+    let lastTouch = 0;
+    window.addEventListener('touchstart', () => { lastTouch = Date.now(); }, { capture: true, passive: true });
+    window.addEventListener('touchend', () => { lastTouch = Date.now(); }, { capture: true, passive: true });
+    ['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].forEach((type) => {
+      window.addEventListener(type, (e) => {
+        const t = e.target;
+        if (Date.now() - lastTouch > 1000 || !(t instanceof Element)) return;
+        if (t.matches('video, .fm-icon')) e.stopImmediatePropagation();
+      }, true);
+    });
+  })();
+
+  // Phones: tapping a video selects it, the way hovering does on a computer:
+  // it plays with quiet sound that fades in, and its controls appear. Tapping
+  // outside it, tapping another video, or scrolling it off screen ends that:
+  // the sound fades out, and a video that wasn't playing before stops.
+  // Hover-to-play animations (silent, with their own tap) are left alone.
+  (function setUpTapVideos() {
+    if (!window.matchMedia('(hover: none)').matches) return;
+    const vids = [...document.querySelectorAll('.page video')].filter((v) =>
+      !v.closest('.monkey-video-card, .fm-icon') && !v.classList.contains('flow-hover-video'));
+    let selected = null;
+    function select(v) {
+      if (selected) deselect(selected);
+      selected = v;
+      v._wasPlaying = !v.paused;
+      v.dispatchEvent(new Event('videoselect'));
+      if (v._hadControls) v.controls = true;
+      v.muted = false;
+      fadeVolume(v, 0, 0.35, 800);
+      v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+      seen.observe(v);
+    }
+    function deselect(v) {
+      if (selected !== v) return;
+      selected = null;
+      seen.unobserve(v);
+      v.controls = false;
+      const wasPlaying = v._wasPlaying;
+      fadeVolume(v, v.muted ? 0 : v.volume, 0, 400, () => {
+        v.muted = true;
+        if (!wasPlaying) autoPause(v);
+      });
+      v.dispatchEvent(new Event('videodeselect'));
+    }
+    const seen = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => { if (!isIntersecting) deselect(target); });
+    }, { threshold: 0.4 });
+    vids.forEach((v) => {
+      v._hadControls = v.controls;
+      v.controls = false;
+      // Once selected, taps go to the video's own controls
+      v.addEventListener('click', () => { if (v !== selected) select(v); });
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (selected && e.target !== selected) deselect(selected);
+    }, true);
+  })();
+
+  // Phones, Loves me, loves me not: someone who stays on this long film is
+  // watching it. After a while its sound slowly rises a little (never loud),
+  // and after a long stretch without touching or scrolling, the rest of the
+  // screen dims slightly, like a cinema. Any touch or scroll brings it back.
+  (function setUpLovesMeWatching() {
+    if (!window.matchMedia('(hover: none)').matches) return;
+    const v = [...document.querySelectorAll('.page video')].find((el) =>
+      (el.querySelector('source') || el).getAttribute('src')?.includes('loves-me'));
+    if (!v) return;
+    const RISE_AFTER = 6, RISE_TO = 0.45, DIM_AFTER = 25;  // seconds; the film is ~47s
+    let inView = false, watchSec = 0, stillSec = 0;
+    new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; }, { threshold: 0.6 }).observe(v);
+    const wake = () => { stillSec = 0; v.classList.remove('cinema-dim'); };
+    window.addEventListener('touchstart', wake, { passive: true });
+    window.addEventListener('scroll', wake, { passive: true });
+    setInterval(() => {
+      const watching = inView && !v.paused && !v.muted && v.offsetParent !== null;
+      if (!watching) { watchSec = 0; wake(); return; }
+      watchSec++;
+      stillSec++;
+      if (watchSec > RISE_AFTER) {
+        const target = Math.min(RISE_TO, 0.2 + (watchSec - RISE_AFTER) * 0.015);
+        if (v.volume < target) v.volume = target;
+      }
+      if (stillSec >= DIM_AFTER) v.classList.add('cinema-dim');
+    }, 1000);
   })();
 
   // Very tall images (like a full landing-page wireframe) would shrink to a
@@ -2817,6 +2924,17 @@
       v.addEventListener('mouseleave', () => {
         hovered = null;
         fadeVolume(v, v.volume, 0, 500, () => { v.muted = true; });
+        i = (k + 1) % vids.length;
+        timer = setTimeout(next, 600);
+      });
+      // Phones: a tap selects an episode the way hovering does (see setUpTapVideos)
+      v.addEventListener('videoselect', () => {
+        hovered = v;
+        clearTimeout(timer);
+        vids.forEach((o) => { if (o !== v) autoPause(o); });
+      });
+      v.addEventListener('videodeselect', () => {
+        hovered = null;
         i = (k + 1) % vids.length;
         timer = setTimeout(next, 600);
       });
@@ -3514,6 +3632,23 @@
     }
   }
 
+  // Once the footer scrolls into view, the Top button rides just above it,
+  // never on top of it. Also rechecked on resize and every so often, since
+  // the footer can move without a scroll (images loading, page switches,
+  // the phone's address bar showing or hiding).
+  function liftFloatingAboveFooter() {
+    const floatScrollTop = document.getElementById('floatScrollTop');
+    const activeFooter = document.querySelector('.page.active .site-footer, body.on-about #about-footer');
+    const footerTop = activeFooter ? activeFooter.getBoundingClientRect().top : Infinity;
+    const zoom = parseFloat(getComputedStyle(floatScrollTop).zoom) || 1;
+    const lift = Math.max(30, (window.innerHeight - footerTop) / zoom + 16);
+    floatScrollTop.style.bottom = lift + 'px';
+    // On narrow screens Next sits in the bottom corner too, so it rides above the footer as well
+    document.getElementById('floatNextProject').style.bottom = window.innerWidth <= 1100 ? lift + 'px' : '';
+  }
+  window.addEventListener('resize', liftFloatingAboveFooter);
+  setInterval(liftFloatingAboveFooter, 300);
+
   window.addEventListener('scroll', () => {
     const floatScrollTop = document.getElementById('floatScrollTop');
     const navEl = document.querySelector('nav');
@@ -3524,14 +3659,7 @@
     } else {
       floatScrollTop.classList.remove('visible');
     }
-    // Once the footer scrolls into view, the Top button rides just above it
-    const activeFooter = document.querySelector('.page.active .site-footer');
-    const footerTop = activeFooter ? activeFooter.getBoundingClientRect().top : Infinity;
-    const zoom = parseFloat(getComputedStyle(floatScrollTop).zoom) || 1;
-    const lift = Math.max(30, (window.innerHeight - footerTop) / zoom + 16);
-    floatScrollTop.style.bottom = lift + 'px';
-    // On narrow screens Next sits in the bottom corner too, so it rides above the footer as well
-    document.getElementById('floatNextProject').style.bottom = window.innerWidth <= 1100 ? lift + 'px' : '';
+    liftFloatingAboveFooter();
 
     const activePage = document.querySelector('.page.active');
     const floatBackWork = document.getElementById('floatBackWork');
